@@ -235,37 +235,25 @@ async function copyDirectory(src, dest) {
 
 // Main CLI logic
 const args = process.argv.slice(2);
-const command = args[0];
 
-// Parse flags
-const flags = {
-  install: args.includes('--install') || args.includes('-i'),
-  setupDb: args.includes('--setup-db') || args.includes('--db'),
-};
-
-// Get project name (filter out flags)
-const projectName = args.find(arg => !arg.startsWith('-') && arg !== command);
-
-if (!command || command === '--help' || command === '-h') {
+// Check for help or version flags first
+if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log(`
 ${colors.bright}${colors.cyan}AZ-DCTS Stack CLI${colors.reset}
 
 ${colors.bright}Usage:${colors.reset}
-  npx az-dcts-stack create <project-name> [options]
-
-${colors.bright}Commands:${colors.reset}
-  create <name>    Create a new AZ-DCTS Stack project
-  --help, -h       Show this help message
-  --version, -v    Show version number
+  npx az-dcts-stack <project-name> [options]
 
 ${colors.bright}Options:${colors.reset}
   --install, -i    Install dependencies after creating project
   --setup-db, --db Setup database after installation (requires --install)
+  --help, -h       Show this help message
+  --version, -v    Show version number
 
 ${colors.bright}Examples:${colors.reset}
-  npx az-dcts-stack create my-app
-  npx az-dcts-stack create my-blog --install
-  npx az-dcts-stack create my-app --install --setup-db
+  npx az-dcts-stack my-app
+  npx az-dcts-stack my-blog --install
+  npx az-dcts-stack my-app --install --setup-db
 
 ${colors.bright}Stack includes:${colors.reset}
   • Astro          - Modern web framework
@@ -285,7 +273,7 @@ ${colors.bright}Stack includes:${colors.reset}
   process.exit(0);
 }
 
-if (command === '--version' || command === '-v') {
+if (args.includes('--version') || args.includes('-v')) {
   const packageJson = JSON.parse(
     await readFile(join(templateDir, 'package.json'), 'utf-8')
   );
@@ -293,17 +281,21 @@ if (command === '--version' || command === '-v') {
   process.exit(0);
 }
 
-if (command === 'create') {
-  if (!projectName) {
-    logError('Please provide a project name');
-    console.log(`Usage: npx az-dcts-stack create <project-name> [options]`);
-    process.exit(1);
-  }
+// Parse flags
+const flags = {
+  install: args.includes('--install') || args.includes('-i'),
+  setupDb: args.includes('--setup-db') || args.includes('--db'),
+};
 
-  log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
-  await createProject(projectName, flags);
-} else {
-  logError(`Unknown command: ${command}`);
-  console.log('Run with --help for usage information');
+// Get project name (first argument that's not a flag)
+const projectName = args.find(arg => !arg.startsWith('-'));
+
+if (!projectName) {
+  logError('Please provide a project name');
+  console.log(`Usage: npx az-dcts-stack <project-name> [options]`);
+  console.log('Run with --help for more information');
   process.exit(1);
 }
+
+log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
+await createProject(projectName, flags);

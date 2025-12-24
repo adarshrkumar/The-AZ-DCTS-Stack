@@ -30,9 +30,15 @@ The **AZ-DCTS Stack** is a carefully curated combination of modern web technolog
 Create a new project using the AZ-DCTS Stack CLI:
 
 ```bash
-npx az-dcts-stack create my-app
+npx az-dcts-stack my-app
 cd my-app
 npm install
+```
+
+Or install dependencies automatically:
+
+```bash
+npx az-dcts-stack my-app --install
 ```
 
 ### Manual Installation
