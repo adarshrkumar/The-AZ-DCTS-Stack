@@ -1,0 +1,60 @@
+@import '../variables';
+@import '../mixins';
+
+// Card component styles
+.card-component {
+  @include card;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+  }
+
+  &__content {
+    color: $text-secondary;
+    line-height: $line-height-relaxed;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Variants
+  &--primary {
+    border-color: $primary-color;
+    background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, transparent 100%);
+  }
+
+  &--secondary {
+    border-color: $secondary-color;
+    background: linear-gradient(135deg, rgba($secondary-color, 0.05) 0%, transparent 100%);
+  }
+
+  &--accent {
+    border-color: $accent-color;
+    background: linear-gradient(135deg, rgba($accent-color, 0.05) 0%, transparent 100%);
+  }
+
+  // States
+  &.active {
+    border-color: $primary-color;
+    box-shadow: $shadow-md;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}

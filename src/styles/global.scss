@@ -1,0 +1,137 @@
+@import './reset';
+@import './variables';
+@import './mixins';
+
+// Global styles
+:root {
+  // CSS custom properties for runtime theming
+  --color-primary: #{$primary-color};
+  --color-primary-hover: #{$primary-hover};
+  --color-secondary: #{$secondary-color};
+  --color-accent: #{$accent-color};
+  --color-text-primary: #{$text-primary};
+  --color-text-secondary: #{$text-secondary};
+  --color-bg-primary: #{$bg-primary};
+  --color-bg-secondary: #{$bg-secondary};
+}
+
+html {
+  font-family: $font-family-base;
+  font-size: 16px;
+  color: $text-primary;
+  background-color: $bg-primary;
+  @include smooth-scroll;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+// Typography
+h1 {
+  @include heading-1;
+  margin-bottom: $spacing-lg;
+}
+
+h2 {
+  @include heading-2;
+  margin-bottom: $spacing-md;
+}
+
+h3 {
+  @include heading-3;
+  margin-bottom: $spacing-md;
+}
+
+p {
+  margin-bottom: $spacing-md;
+  line-height: $line-height-relaxed;
+  color: $text-secondary;
+}
+
+// Links
+a {
+  color: $primary-color;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary-hover;
+  }
+
+  @include focus-visible;
+}
+
+// Utility classes
+.container {
+  @include container;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+.card {
+  @include card;
+}
+
+.sr-only {
+  @include visually-hidden;
+}
+
+// Spacing utilities
+.mt-sm { margin-top: $spacing-sm; }
+.mt-md { margin-top: $spacing-md; }
+.mt-lg { margin-top: $spacing-lg; }
+.mt-xl { margin-top: $spacing-xl; }
+
+.mb-sm { margin-bottom: $spacing-sm; }
+.mb-md { margin-bottom: $spacing-md; }
+.mb-lg { margin-bottom: $spacing-lg; }
+.mb-xl { margin-bottom: $spacing-xl; }
+
+.pt-sm { padding-top: $spacing-sm; }
+.pt-md { padding-top: $spacing-md; }
+.pt-lg { padding-top: $spacing-lg; }
+.pt-xl { padding-top: $spacing-xl; }
+
+.pb-sm { padding-bottom: $spacing-sm; }
+.pb-md { padding-bottom: $spacing-md; }
+.pb-lg { padding-bottom: $spacing-lg; }
+.pb-xl { padding-bottom: $spacing-xl; }
+
+// Text utilities
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: $text-primary;
+}
+
+.text-secondary {
+  color: $text-secondary;
+}
+
+.text-light {
+  color: $text-light;
+}
+
+.truncate {
+  @include truncate;
+}
+
+.line-clamp-2 {
+  @include line-clamp(2);
+}
+
+.line-clamp-3 {
+  @include line-clamp(3);
+}

@@ -1,0 +1,79 @@
+@import '../variables';
+@import '../mixins';
+
+// Home page styles
+.home {
+  padding: $spacing-3xl 0;
+
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+  }
+
+  &__title {
+    @include heading-1;
+    margin-bottom: $spacing-md;
+    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__subtitle {
+    font-size: $font-size-lg;
+    color: $text-secondary;
+    max-width: 600px;
+    margin: 0 auto;
+
+    @include md {
+      font-size: $font-size-xl;
+    }
+  }
+
+  &__features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-3xl;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__feature {
+    h3 {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      margin-bottom: $spacing-sm;
+      color: $text-primary;
+    }
+
+    p {
+      font-size: $font-size-base;
+      color: $text-secondary;
+      margin-bottom: 0;
+    }
+  }
+
+  &__cta {
+    text-align: center;
+    padding: $spacing-3xl 0;
+    border-top: 1px solid $border-color;
+
+    h2 {
+      @include heading-2;
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  &__cta-buttons {
+    @include flex-center;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+  }
+}

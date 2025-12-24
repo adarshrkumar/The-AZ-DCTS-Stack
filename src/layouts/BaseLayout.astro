@@ -1,0 +1,44 @@
+---
+/**
+ * Base Layout Component
+ * Demonstrates proper SCSS architecture:
+ * - No <style> tags in this file
+ * - All styles imported from external SCSS files
+ * - Global styles applied via import in the head
+ */
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'AZ-DCTS Stack',
+  description = 'Full-stack application built with Astro, TypeScript, Drizzle, Clerk, and SCSS',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <title>{title}</title>
+
+    <!-- Global styles imported from external SCSS file -->
+    <link rel="stylesheet" href="/src/styles/global.scss" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

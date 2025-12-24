@@ -1,0 +1,86 @@
+---
+/**
+ * Home Page
+ * Demonstrates SCSS architecture:
+ * - No inline styles
+ * - All styles imported from external SCSS file
+ * - Component-specific styles in separate files
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// Import component-specific styles
+import '@/styles/components/button.scss';
+import '@/styles/pages/home.scss';
+---
+
+<BaseLayout title="AZ-DCTS Stack - Home">
+  <main class="home">
+    <div class="container">
+      <header class="home__header">
+        <h1 class="home__title">Welcome to AZ-DCTS Stack</h1>
+        <p class="home__subtitle">
+          A production-ready full-stack framework combining the best modern web technologies
+        </p>
+      </header>
+
+      <section class="home__features">
+        <div class="home__feature card">
+          <h3>⚡ Astro</h3>
+          <p>Lightning-fast static site generation with dynamic capabilities</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>📘 TypeScript</h3>
+          <p>Full type safety across your entire application</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>🗄️ Drizzle ORM</h3>
+          <p>Type-safe database operations with PostgreSQL</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>🔐 Clerk</h3>
+          <p>Complete authentication and user management</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>🎨 SCSS</h3>
+          <p>Powerful styling with variables, mixins, and modules</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>✅ Zod</h3>
+          <p>Runtime validation for API routes and forms</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>🤖 Vercel AI SDK</h3>
+          <p>Seamless integration with AI language models</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>🔑 NanoID</h3>
+          <p>Secure, URL-friendly unique identifiers</p>
+        </div>
+
+        <div class="home__feature card">
+          <h3>📱 PWA</h3>
+          <p>Progressive Web App with offline capabilities</p>
+        </div>
+      </section>
+
+      <section class="home__cta">
+        <h2>Get Started</h2>
+        <div class="home__cta-buttons">
+          <a href="/docs" class="btn btn-primary btn-lg">
+            Read Documentation
+          </a>
+          <a href="https://github.com/yourusername/az-dcts-stack" class="btn btn-secondary btn-lg">
+            View on GitHub
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
