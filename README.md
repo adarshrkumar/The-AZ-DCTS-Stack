@@ -30,6 +30,10 @@ The **AZ-DCTS Stack** is a carefully curated combination of modern web technolog
 Create a new project using the AZ-DCTS Stack CLI:
 
 ```bash
+# Interactive mode - will prompt for project name
+npx az-dcts-stack
+
+# Or provide the project name directly
 npx az-dcts-stack my-app
 cd my-app
 npm install

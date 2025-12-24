@@ -10,6 +10,7 @@ import { dirname, join } from 'node:path';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import * as readline from 'node:readline/promises';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -43,6 +44,20 @@ function logError(message) {
 
 function logWarning(message) {
   console.warn(`${colors.yellow}⚠${colors.reset} ${message}`);
+}
+
+async function promptUser(question) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  try {
+    const answer = await rl.question(`${colors.cyan}${question}${colors.reset} `);
+    return answer.trim();
+  } finally {
+    rl.close();
+  }
 }
 
 async function setupDatabase(projectDir) {
@@ -242,7 +257,9 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
 ${colors.bright}${colors.cyan}AZ-DCTS Stack CLI${colors.reset}
 
 ${colors.bright}Usage:${colors.reset}
-  npx az-dcts-stack <project-name> [options]
+  npx az-dcts-stack [project-name] [options]
+
+  If project name is not provided, you will be prompted to enter it.
 
 ${colors.bright}Options:${colors.reset}
   --install, -i    Install dependencies after creating project
@@ -251,9 +268,10 @@ ${colors.bright}Options:${colors.reset}
   --version, -v    Show version number
 
 ${colors.bright}Examples:${colors.reset}
-  npx az-dcts-stack my-app
-  npx az-dcts-stack my-blog --install
-  npx az-dcts-stack my-app --install --setup-db
+  npx az-dcts-stack                          # Interactive mode
+  npx az-dcts-stack my-app                   # With project name
+  npx az-dcts-stack my-blog --install        # With auto-install
+  npx az-dcts-stack my-app --install --setup-db  # Full setup
 
 ${colors.bright}Stack includes:${colors.reset}
   • Astro          - Modern web framework
@@ -288,13 +306,27 @@ const flags = {
 };
 
 // Get project name (first argument that's not a flag)
-const projectName = args.find(arg => !arg.startsWith('-'));
+let projectName = args.find(arg => !arg.startsWith('-'));
 
+// If no project name provided, prompt the user
 if (!projectName) {
-  logError('Please provide a project name');
-  console.log(`Usage: npx az-dcts-stack <project-name> [options]`);
-  console.log('Run with --help for more information');
-  process.exit(1);
+  log('\n' + '='.repeat(60), 'bright');
+  log('Welcome to AZ-DCTS Stack!', 'cyan');
+  log('='.repeat(60), 'bright');
+  console.log();
+
+  projectName = await promptUser('What would you like to name your project?');
+
+  if (!projectName) {
+    logError('Project name is required');
+    process.exit(1);
+  }
+
+  // Validate project name (basic validation)
+  if (!/^[a-z0-9-_]+$/i.test(projectName)) {
+    logError('Project name can only contain letters, numbers, hyphens, and underscores');
+    process.exit(1);
+  }
 }
 
 log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
