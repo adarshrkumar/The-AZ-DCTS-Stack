@@ -30,10 +30,21 @@ The **AZ-DCTS Stack** is a carefully curated combination of modern web technolog
 Create a new project using the AZ-DCTS Stack CLI:
 
 ```bash
-npx az-dcts-stack create my-app
-cd my-app
-npm install
+# Fully interactive mode - prompts for everything
+npx az-dcts-stack
+
+# Provide project name, get prompted for install/setup options
+npx az-dcts-stack my-app
+
+# Skip prompts with explicit flags
+npx az-dcts-stack my-app --install
+npx az-dcts-stack my-app --install --setup-db
 ```
+
+The CLI will interactively prompt you for any options you don't provide:
+- **Project name** - if not provided as argument
+- **Install dependencies** - if `--install` flag not provided
+- **Setup database** - if `--setup-db` flag not provided (only when installing)
 
 ### Manual Installation
 
