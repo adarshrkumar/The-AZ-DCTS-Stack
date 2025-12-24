@@ -60,6 +60,18 @@ async function promptUser(question) {
   }
 }
 
+async function promptYesNo(question, defaultValue = false) {
+  const defaultText = defaultValue ? 'Y/n' : 'y/N';
+  const answer = await promptUser(`${question} (${defaultText}):`);
+
+  if (!answer) {
+    return defaultValue;
+  }
+
+  const normalized = answer.toLowerCase();
+  return normalized === 'y' || normalized === 'yes';
+}
+
 async function setupDatabase(projectDir) {
   try {
     logStep('DB', 'Setting up database...');
@@ -259,7 +271,7 @@ ${colors.bright}${colors.cyan}AZ-DCTS Stack CLI${colors.reset}
 ${colors.bright}Usage:${colors.reset}
   npx az-dcts-stack [project-name] [options]
 
-  If project name is not provided, you will be prompted to enter it.
+  ${colors.yellow}Interactive Mode:${colors.reset} If any options are omitted, you will be prompted for them.
 
 ${colors.bright}Options:${colors.reset}
   --install, -i    Install dependencies after creating project
@@ -268,10 +280,10 @@ ${colors.bright}Options:${colors.reset}
   --version, -v    Show version number
 
 ${colors.bright}Examples:${colors.reset}
-  npx az-dcts-stack                          # Interactive mode
-  npx az-dcts-stack my-app                   # With project name
-  npx az-dcts-stack my-blog --install        # With auto-install
-  npx az-dcts-stack my-app --install --setup-db  # Full setup
+  npx az-dcts-stack                          # Fully interactive mode
+  npx az-dcts-stack my-app                   # Interactive for options
+  npx az-dcts-stack my-blog --install        # Install, prompt for DB setup
+  npx az-dcts-stack my-app --install --setup-db  # Full automatic setup
 
 ${colors.bright}Stack includes:${colors.reset}
   • Astro          - Modern web framework
@@ -299,22 +311,25 @@ if (args.includes('--version') || args.includes('-v')) {
   process.exit(0);
 }
 
-// Parse flags
-const flags = {
-  install: args.includes('--install') || args.includes('-i'),
-  setupDb: args.includes('--setup-db') || args.includes('--db'),
-};
+// Check if flags were explicitly passed
+const installFlagPassed = args.includes('--install') || args.includes('-i');
+const setupDbFlagPassed = args.includes('--setup-db') || args.includes('--db');
 
 // Get project name (first argument that's not a flag)
 let projectName = args.find(arg => !arg.startsWith('-'));
 
-// If no project name provided, prompt the user
-if (!projectName) {
+// Interactive mode setup
+const needsInteractive = !projectName || !installFlagPassed || (!setupDbFlagPassed && installFlagPassed);
+
+if (needsInteractive && !projectName) {
   log('\n' + '='.repeat(60), 'bright');
   log('Welcome to AZ-DCTS Stack!', 'cyan');
   log('='.repeat(60), 'bright');
   console.log();
+}
 
+// Prompt for project name if not provided
+if (!projectName) {
   projectName = await promptUser('What would you like to name your project?');
 
   if (!projectName) {
@@ -327,7 +342,28 @@ if (!projectName) {
     logError('Project name can only contain letters, numbers, hyphens, and underscores');
     process.exit(1);
   }
+  console.log();
 }
+
+// Prompt for install flag if not provided
+let shouldInstall = installFlagPassed;
+if (!installFlagPassed) {
+  shouldInstall = await promptYesNo('Would you like to install dependencies now?', true);
+  console.log();
+}
+
+// Prompt for setup-db flag if not provided (only if installing)
+let shouldSetupDb = setupDbFlagPassed;
+if (shouldInstall && !setupDbFlagPassed) {
+  shouldSetupDb = await promptYesNo('Would you like to set up the database now?', false);
+  console.log();
+}
+
+// Build flags object
+const flags = {
+  install: shouldInstall,
+  setupDb: shouldSetupDb,
+};
 
 log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
 await createProject(projectName, flags);
