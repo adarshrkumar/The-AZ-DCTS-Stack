@@ -1,0 +1,240 @@
+@import '../variables';
+@import '../mixins';
+
+// Form component styles
+// Usage (preferred): <input class="form-input" data-state="error" data-size="lg" />
+// Usage (alternative): <input class="form-input error lg" />
+
+.form {
+  width: 100%;
+  max-width: 600px;
+
+  &-group {
+    margin-bottom: $spacing-lg;
+  }
+
+  &-label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+
+    // Use data attributes for required state
+    &[data-required='true']::after {
+      content: ' *';
+      color: $error-color;
+    }
+
+    // Alternative: class chaining
+    &.required::after {
+      content: ' *';
+      color: $error-color;
+    }
+  }
+
+  &-input,
+  &-textarea,
+  &-select {
+    @include input-base;
+
+    // State modifiers using data attributes (preferred)
+    &[data-state='error'] {
+      border-color: $error-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+    }
+
+    &[data-state='success'] {
+      border-color: $success-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+    }
+
+    &[data-state='warning'] {
+      border-color: $warning-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+      }
+    }
+
+    // Size modifiers using data attributes
+    &[data-size='sm'] {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+    }
+
+    &[data-size='lg'] {
+      padding: $spacing-md $spacing-lg;
+      font-size: $font-size-lg;
+    }
+
+    // Alternative: class chaining for states
+    &.error {
+      border-color: $error-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+    }
+
+    &.success {
+      border-color: $success-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+    }
+
+    &.warning {
+      border-color: $warning-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+      }
+    }
+
+    // Size class chaining alternatives
+    &.sm {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+    }
+
+    &.lg {
+      padding: $spacing-md $spacing-lg;
+      font-size: $font-size-lg;
+    }
+  }
+
+  &-textarea {
+    min-height: 120px;
+    resize: vertical;
+
+    &[data-resize='none'] {
+      resize: none;
+    }
+
+    &[data-resize='horizontal'] {
+      resize: horizontal;
+    }
+
+    &.no-resize {
+      resize: none;
+    }
+  }
+
+  &-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right $spacing-sm center;
+    background-repeat: no-repeat;
+    background-size: 1.5rem 1.5rem;
+    padding-right: $spacing-2xl;
+  }
+
+  &-helper {
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+
+    &[data-state='error'] {
+      color: $error-color;
+    }
+
+    &[data-state='success'] {
+      color: $success-color;
+    }
+
+    &[data-state='warning'] {
+      color: $warning-color;
+    }
+  }
+
+  &-error {
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $error-color;
+  }
+
+  &-checkbox,
+  &-radio {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+
+    input {
+      width: 1.125rem;
+      height: 1.125rem;
+      cursor: pointer;
+      accent-color: $primary-color;
+    }
+
+    label {
+      cursor: pointer;
+      font-size: $font-size-base;
+      color: $text-primary;
+    }
+
+    &[data-state='disabled'] {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      input,
+      label {
+        cursor: not-allowed;
+      }
+    }
+
+    // Alternative class chaining
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      input,
+      label {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &-actions {
+    @include flex-between;
+    margin-top: $spacing-xl;
+    gap: $spacing-md;
+
+    &[data-layout='stack'] {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    &[data-align='center'] {
+      justify-content: center;
+    }
+
+    &[data-align='start'] {
+      justify-content: flex-start;
+    }
+
+    &[data-align='end'] {
+      justify-content: flex-end;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
