@@ -480,14 +480,14 @@ if (!projectName) {
 // Prompt for install flag if not provided
 let shouldInstall = installFlagPassed;
 if (!installFlagPassed) {
-  shouldInstall = await promptYesNo('Would you like to install dependencies now?', true);
+  shouldInstall = await promptYesNo('Install dependencies now?', true);
   console.log();
 }
 
 // Prompt for setup-db flag if not provided (only if installing)
 let shouldSetupDb = setupDbFlagPassed;
 if (shouldInstall && !setupDbFlagPassed) {
-  shouldSetupDb = await promptYesNo('Would you like to set up the database now?', false);
+  shouldSetupDb = await promptYesNo('Set up the database now?', false);
   console.log();
 }
 
