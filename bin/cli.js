@@ -41,7 +41,39 @@ function logError(message) {
   console.error(`${colors.red}✗${colors.reset} ${message}`);
 }
 
-async function createProject(projectName) {
+function logWarning(message) {
+  console.warn(`${colors.yellow}⚠${colors.reset} ${message}`);
+}
+
+async function setupDatabase(projectDir) {
+  try {
+    logStep('DB', 'Setting up database...');
+
+    // Check if .env file exists
+    const envPath = join(projectDir, '.env');
+    if (!existsSync(envPath)) {
+      logWarning('No .env file found. Skipping database setup.');
+      logWarning('Please copy .env.example to .env and configure your DATABASE_URL');
+      return false;
+    }
+
+    // Try to run drizzle-kit push
+    execSync('npm run db:push', {
+      cwd: projectDir,
+      stdio: 'inherit',
+    });
+
+    logSuccess('Database schema pushed successfully');
+    return true;
+  } catch (error) {
+    logError('Failed to push database schema');
+    logWarning('Please configure your DATABASE_URL in .env and run: npm run db:push');
+    console.log(`\nError details: ${error.message}`);
+    return false;
+  }
+}
+
+async function createProject(projectName, options = {}) {
   const targetDir = join(process.cwd(), projectName);
 
   try {
@@ -99,7 +131,7 @@ async function createProject(projectName) {
     await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
     logSuccess('package.json updated');
 
-    // Step 5: Create .env.example
+    // Step 5: Create .env.example and .env
     logStep(5, 'Creating environment file template...');
     const envExample = `# Database
 DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
@@ -111,31 +143,69 @@ CLERK_SECRET_KEY="sk_test_..."
 # OpenAI (for Vercel AI SDK)
 OPENAI_API_KEY="sk-..."
 
+# Exa Search (for AI-powered search)
+EXA_API_KEY="..."
+
 # Vercel (for deployment)
 # These are automatically set by Vercel
 # VERCEL_URL
 # VERCEL_ENV
 `;
     await writeFile(join(targetDir, '.env.example'), envExample);
-    logSuccess('.env.example created');
+    await writeFile(join(targetDir, '.env'), envExample);
+    logSuccess('.env.example and .env created');
 
-    // Step 6: Display next steps
+    // Step 6: Install dependencies if requested
+    if (options.install) {
+      logStep(6, 'Installing dependencies...');
+      try {
+        execSync('npm install', {
+          cwd: targetDir,
+          stdio: 'inherit',
+        });
+        logSuccess('Dependencies installed');
+      } catch (error) {
+        logWarning('Failed to install dependencies. You can run npm install manually.');
+      }
+    }
+
+    // Step 7: Setup database if requested
+    if (options.setupDb && options.install) {
+      await setupDatabase(targetDir);
+    }
+
+    // Display next steps
     log('\n' + '='.repeat(60), 'bright');
     log('🎉 Project created successfully!', 'green');
     log('='.repeat(60), 'bright');
 
     console.log('\nNext steps:');
-    console.log(`  1. ${colors.cyan}cd ${projectName}${colors.reset}`);
-    console.log(`  2. ${colors.cyan}npm install${colors.reset}`);
-    console.log(`  3. Copy ${colors.yellow}.env.example${colors.reset} to ${colors.yellow}.env${colors.reset} and fill in your values`);
-    console.log(`  4. ${colors.cyan}npm run db:push${colors.reset} - Push database schema`);
-    console.log(`  5. ${colors.cyan}npm run dev${colors.reset} - Start development server`);
+    let step = 1;
+    console.log(`  ${step++}. ${colors.cyan}cd ${projectName}${colors.reset}`);
+
+    if (!options.install) {
+      console.log(`  ${step++}. ${colors.cyan}npm install${colors.reset}`);
+    }
+
+    console.log(`  ${step++}. Edit ${colors.yellow}.env${colors.reset} and fill in your database credentials and API keys`);
+
+    if (!options.setupDb) {
+      console.log(`  ${step++}. ${colors.cyan}npm run db:push${colors.reset} - Push database schema`);
+    }
+
+    console.log(`  ${step++}. ${colors.cyan}npm run dev${colors.reset} - Start development server`);
 
     console.log('\nDocumentation:');
     console.log(`  • Astro: ${colors.cyan}https://astro.build${colors.reset}`);
     console.log(`  • Drizzle ORM: ${colors.cyan}https://orm.drizzle.team${colors.reset}`);
     console.log(`  • Clerk: ${colors.cyan}https://clerk.com/docs${colors.reset}`);
     console.log(`  • Vercel AI SDK: ${colors.cyan}https://sdk.vercel.ai${colors.reset}`);
+    console.log(`  • Exa Search: ${colors.cyan}https://docs.exa.ai${colors.reset}`);
+
+    console.log('\nNew utilities added:');
+    console.log(`  • Cheerio - DOM manipulation in ${colors.cyan}src/lib/dom-utils.ts${colors.reset}`);
+    console.log(`  • Marked/Turndown - Content conversion in ${colors.cyan}src/lib/content-converter.ts${colors.reset}`);
+    console.log(`  • Exa - AI search in ${colors.cyan}src/lib/exa-search.ts${colors.reset}`);
 
     log('\n' + '='.repeat(60), 'bright');
 
@@ -166,34 +236,51 @@ async function copyDirectory(src, dest) {
 // Main CLI logic
 const args = process.argv.slice(2);
 const command = args[0];
-const projectName = args[1];
+
+// Parse flags
+const flags = {
+  install: args.includes('--install') || args.includes('-i'),
+  setupDb: args.includes('--setup-db') || args.includes('--db'),
+};
+
+// Get project name (filter out flags)
+const projectName = args.find(arg => !arg.startsWith('-') && arg !== command);
 
 if (!command || command === '--help' || command === '-h') {
   console.log(`
 ${colors.bright}${colors.cyan}AZ-DCTS Stack CLI${colors.reset}
 
 ${colors.bright}Usage:${colors.reset}
-  npx az-dcts-stack create <project-name>
+  npx az-dcts-stack create <project-name> [options]
 
 ${colors.bright}Commands:${colors.reset}
   create <name>    Create a new AZ-DCTS Stack project
   --help, -h       Show this help message
   --version, -v    Show version number
 
+${colors.bright}Options:${colors.reset}
+  --install, -i    Install dependencies after creating project
+  --setup-db, --db Setup database after installation (requires --install)
+
 ${colors.bright}Examples:${colors.reset}
   npx az-dcts-stack create my-app
-  npx az-dcts-stack create my-blog
+  npx az-dcts-stack create my-blog --install
+  npx az-dcts-stack create my-app --install --setup-db
 
 ${colors.bright}Stack includes:${colors.reset}
   • Astro          - Modern web framework
   • TypeScript     - Type-safe development
   • Drizzle ORM    - Type-safe database operations
   • Clerk          - Authentication & user management
-  • SCSS           - Advanced styling
+  • SCSS           - Advanced styling (data attributes preferred)
   • Zod            - Runtime validation
   • Vercel AI SDK  - AI integration
   • NanoID         - Unique ID generation
   • Vite PWA       - Progressive Web App
+  • Cheerio        - Virtual DOM manipulation
+  • Marked         - Markdown to HTML conversion
+  • Turndown       - HTML to Markdown conversion
+  • Exa            - AI-powered search
 `);
   process.exit(0);
 }
@@ -209,12 +296,12 @@ if (command === '--version' || command === '-v') {
 if (command === 'create') {
   if (!projectName) {
     logError('Please provide a project name');
-    console.log(`Usage: npx az-dcts-stack create <project-name>`);
+    console.log(`Usage: npx az-dcts-stack create <project-name> [options]`);
     process.exit(1);
   }
 
   log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
-  await createProject(projectName);
+  await createProject(projectName, flags);
 } else {
   logError(`Unknown command: ${command}`);
   console.log('Run with --help for usage information');

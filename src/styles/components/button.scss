@@ -2,20 +2,22 @@
 @import '../mixins';
 
 // Button component styles
-// Usage: <button class="btn btn-primary">Click me</button>
+// Usage (preferred): <button class="btn" data-variant="primary" data-size="lg">Click me</button>
+// Usage (alternative): <button class="btn primary lg">Class chaining</button>
 
 .btn {
   @include button-base;
 
-  &-primary {
+  // Variant modifiers using data attributes (preferred for state/variants)
+  &[data-variant='primary'] {
     @include button-primary;
   }
 
-  &-secondary {
+  &[data-variant='secondary'] {
     @include button-secondary;
   }
 
-  &-danger {
+  &[data-variant='danger'] {
     background-color: $error-color;
     color: $text-inverse;
 
@@ -24,7 +26,7 @@
     }
   }
 
-  &-success {
+  &[data-variant='success'] {
     background-color: $success-color;
     color: $text-inverse;
 
@@ -33,21 +35,49 @@
     }
   }
 
-  &-sm {
+  // Size modifiers using data attributes
+  &[data-size='sm'] {
     padding: $spacing-xs $spacing-sm;
     font-size: $font-size-sm;
   }
 
-  &-lg {
+  &[data-size='lg'] {
     padding: $spacing-md $spacing-xl;
     font-size: $font-size-lg;
   }
 
-  &-full {
+  // State modifiers using data attributes
+  &[data-state='loading'] {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      top: 50%;
+      left: 50%;
+      margin-left: -0.5rem;
+      margin-top: -0.5rem;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: button-spin 0.6s linear infinite;
+    }
+  }
+
+  &[data-state='active'] {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  // Layout modifiers using data attributes
+  &[data-width='full'] {
     width: 100%;
   }
 
-  &-icon {
+  &[data-has-icon='true'] {
     display: inline-flex;
     align-items: center;
     gap: $spacing-sm;
@@ -56,5 +86,66 @@
       width: 1.25rem;
       height: 1.25rem;
     }
+  }
+
+  // Alternative: Class chaining for variants when data attributes aren't appropriate
+  // Use this when you need CSS-only solutions or when data attributes feel verbose
+  &.primary {
+    @include button-primary;
+  }
+
+  &.secondary {
+    @include button-secondary;
+  }
+
+  &.danger {
+    background-color: $error-color;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) {
+      background-color: darken($error-color, 10%);
+    }
+  }
+
+  &.success {
+    background-color: $success-color;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) {
+      background-color: darken($success-color, 10%);
+    }
+  }
+
+  // Size class chaining alternatives
+  &.sm {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+  }
+
+  &.lg {
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-lg;
+  }
+
+  // Layout class chaining alternatives
+  &.full {
+    width: 100%;
+  }
+
+  &.with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

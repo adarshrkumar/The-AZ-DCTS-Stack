@@ -18,6 +18,10 @@ The **AZ-DCTS Stack** is a carefully curated combination of modern web technolog
 - **Vercel AI SDK** - Seamless integration with AI language models
 - **NanoID** - Secure, URL-friendly unique identifiers for database records
 - **Vite PWA** - Progressive Web App capabilities with offline support
+- **Cheerio** - Server-side jQuery for HTML/DOM manipulation
+- **Marked** - Fast Markdown to HTML converter
+- **Turndown** - HTML to Markdown converter
+- **Exa** - AI-powered search for intelligent content discovery
 
 ## 📦 Installation
 
@@ -123,6 +127,8 @@ This stack enforces a strict separation of concerns for styling:
 2. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
 3. **Component-specific styles** in `src/styles/components/`
 4. **Page-specific styles** in `src/styles/pages/`
+5. **Use data attributes for modifiers** (preferred over BEM modifier classes)
+6. **Use class chaining** when data attributes aren't appropriate
 
 ### Example Usage
 
@@ -137,9 +143,37 @@ import '@/styles/pages/example.scss';
 <BaseLayout title="Example Page">
   <div class="example-page">
     <h1>Hello World</h1>
-    <button class="btn btn-primary">Click Me</button>
+    <!-- Preferred: Data attributes for modifiers -->
+    <button class="btn" data-variant="primary" data-size="lg">Click Me</button>
+
+    <!-- Alternative: Class chaining -->
+    <button class="btn primary lg">Click Me Too</button>
   </div>
 </BaseLayout>
+```
+
+### Styling Approach
+
+**Preferred: Data Attributes**
+```scss
+.btn {
+  @include button-base;
+
+  &[data-variant='primary'] { /* styles */ }
+  &[data-size='lg'] { /* styles */ }
+  &[data-state='loading'] { /* styles */ }
+}
+```
+
+**Alternative: Class Chaining**
+```scss
+.btn {
+  @include button-base;
+
+  &.primary { /* styles */ }
+  &.lg { /* styles */ }
+  &.loading { /* styles */ }
+}
 ```
 
 ### Available Mixins

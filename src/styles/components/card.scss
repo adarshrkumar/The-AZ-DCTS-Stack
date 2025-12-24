@@ -2,6 +2,9 @@
 @import '../mixins';
 
 // Card component styles
+// Usage (preferred): <div class="card" data-variant="primary" data-state="active">...</div>
+// Usage (alternative): <div class="card primary active">Class chaining</div>
+
 .card-component {
   @include card;
   display: block;
@@ -30,23 +33,114 @@
     }
   }
 
-  // Variants
-  &--primary {
+  // Variant modifiers using data attributes (preferred)
+  &[data-variant='primary'] {
     border-color: $primary-color;
     background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, transparent 100%);
   }
 
-  &--secondary {
+  &[data-variant='secondary'] {
     border-color: $secondary-color;
     background: linear-gradient(135deg, rgba($secondary-color, 0.05) 0%, transparent 100%);
   }
 
-  &--accent {
+  &[data-variant='accent'] {
     border-color: $accent-color;
     background: linear-gradient(135deg, rgba($accent-color, 0.05) 0%, transparent 100%);
   }
 
-  // States
+  &[data-variant='ghost'] {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+
+    &:hover {
+      background-color: $bg-secondary;
+    }
+  }
+
+  // State modifiers using data attributes
+  &[data-state='active'] {
+    border-color: $primary-color;
+    box-shadow: $shadow-md;
+  }
+
+  &[data-state='disabled'] {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &[data-state='loading'] {
+    position: relative;
+    opacity: 0.7;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2rem;
+      height: 2rem;
+      margin: -1rem 0 0 -1rem;
+      border: 3px solid $border-color;
+      border-top-color: $primary-color;
+      border-radius: 50%;
+      animation: card-spin 0.8s linear infinite;
+    }
+  }
+
+  // Layout modifiers using data attributes
+  &[data-padding='compact'] {
+    padding: $spacing-md;
+  }
+
+  &[data-padding='comfortable'] {
+    padding: $spacing-2xl;
+  }
+
+  &[data-hover='lift'] {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-xl;
+    }
+  }
+
+  &[data-hover='none'] {
+    &:hover {
+      transform: none;
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  // Alternative: Class chaining when data attributes aren't appropriate
+  &.primary {
+    border-color: $primary-color;
+    background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, transparent 100%);
+  }
+
+  &.secondary {
+    border-color: $secondary-color;
+    background: linear-gradient(135deg, rgba($secondary-color, 0.05) 0%, transparent 100%);
+  }
+
+  &.accent {
+    border-color: $accent-color;
+    background: linear-gradient(135deg, rgba($accent-color, 0.05) 0%, transparent 100%);
+  }
+
+  &.ghost {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+
+    &:hover {
+      background-color: $bg-secondary;
+    }
+  }
+
+  // State class chaining alternatives
   &.active {
     border-color: $primary-color;
     box-shadow: $shadow-md;
@@ -56,5 +150,31 @@
     opacity: 0.6;
     pointer-events: none;
     cursor: not-allowed;
+  }
+
+  &.loading {
+    position: relative;
+    opacity: 0.7;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2rem;
+      height: 2rem;
+      margin: -1rem 0 0 -1rem;
+      border: 3px solid $border-color;
+      border-top-color: $primary-color;
+      border-radius: 50%;
+      animation: card-spin 0.8s linear infinite;
+    }
+  }
+}
+
+@keyframes card-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

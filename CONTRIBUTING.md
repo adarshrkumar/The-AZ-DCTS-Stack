@@ -101,11 +101,17 @@ type User = {
 **Critical Rule**: Never use inline `<style>` tags in `.astro` files unless the component is completely self-standing and not part of the main layout.
 
 ```astro
-<!-- GOOD: External styles -->
+<!-- GOOD: External styles with data attributes (preferred) -->
 ---
 import '@/styles/components/button.scss';
 ---
-<button class="btn btn-primary">Click Me</button>
+<button class="btn" data-variant="primary" data-size="lg">Click Me</button>
+
+<!-- GOOD: External styles with class chaining (alternative) -->
+---
+import '@/styles/components/button.scss';
+---
+<button class="btn primary lg">Click Me</button>
 
 <!-- BAD: Inline styles (avoid this) -->
 <button class="btn">Click Me</button>
@@ -122,20 +128,47 @@ import '@/styles/components/button.scss';
 - **Component styles**: `src/styles/components/[component-name].scss`
 - **Page styles**: `src/styles/pages/[page-name].scss`
 
-**Naming Conventions:**
+**Naming Conventions & Modifier Strategy:**
 
-- Use BEM (Block Element Modifier) for class names
+- Use **data attributes** for modifiers by default (preferred for state and variants)
+- Use **class chaining** when data attributes aren't appropriate
 - Use kebab-case for file names
 - Prefix component-specific classes with component name
+- Use BEM for elements only (not modifiers)
 
 ```scss
 // Component: Button
 .btn {
+  @include button-base;
+
+  // Preferred: Data attribute modifiers
+  &[data-variant='primary'] { /* state/variant */ }
+  &[data-size='lg'] { /* size modifier */ }
+  &[data-state='loading'] { /* dynamic state */ }
+
+  // Alternative: Class chaining
+  &.primary { /* variant */ }
+  &.lg { /* size modifier */ }
+  &.loading { /* dynamic state */ }
+
+  // BEM for elements (still valid)
   &__icon { /* element */ }
-  &--primary { /* modifier */ }
-  &--large { /* modifier */ }
 }
 ```
+
+**When to use data attributes vs. class chaining:**
+
+- **Data attributes (preferred):**
+  - Dynamic states (loading, active, disabled)
+  - Variants (primary, secondary, success, danger)
+  - Configuration (size, padding, alignment)
+  - Semantic modifiers that describe state
+
+- **Class chaining (when appropriate):**
+  - CSS-only solutions without JavaScript
+  - When data attributes feel verbose
+  - Simple utility classes
+  - When working with third-party libraries
 
 #### Database Schema
 
