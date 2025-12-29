@@ -117,8 +117,8 @@ Your application will be available at `http://localhost:4321`
 │   │   └── index.astro    # Home page
 │   └── styles/
 │       ├── variables/
-│       │   └── globals.scss # SCSS global variables
-│       ├── _mixins.scss    # SCSS mixins
+│       │   ├── globals.scss # SCSS global variables
+│       │   └── mixins.scss  # SCSS mixins
 │       ├── _reset.scss     # CSS reset
 │       ├── global.scss     # Global styles
 │       ├── components/     # Component-specific styles

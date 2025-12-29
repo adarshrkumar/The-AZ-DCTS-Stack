@@ -123,7 +123,7 @@ import '@/styles/components/button.scss';
 **SCSS File Organization:**
 
 - **Variables**: `src/styles/variables/globals.scss`
-- **Mixins**: `src/styles/_mixins.scss`
+- **Mixins**: `src/styles/variables/mixins.scss`
 - **Global styles**: `src/styles/global.scss`
 - **Component styles**: `src/styles/components/[component-name].scss`
 - **Page styles**: `src/styles/pages/[page-name].scss`
@@ -288,8 +288,8 @@ src/
     ├── components/   # Component styles
     ├── pages/        # Page styles
     ├── variables/
-    │   └── globals.scss
-    ├── _mixins.scss
+    │   ├── globals.scss
+    │   └── mixins.scss
     └── global.scss
 ```
 
