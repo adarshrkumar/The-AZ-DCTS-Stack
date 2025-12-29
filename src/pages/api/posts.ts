@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { db } from '@/db/client';
+import { db } from '@/db/initialize';
 import { posts } from '@/db/schema';
 import {
   createPostSchema,
