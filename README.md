@@ -116,7 +116,8 @@ Your application will be available at `http://localhost:4321`
 │   │   │   └── posts.ts   # CRUD operations for posts
 │   │   └── index.astro    # Home page
 │   └── styles/
-│       ├── _variables.scss # SCSS variables
+│       ├── variables/
+│       │   └── globals.scss # SCSS global variables
 │       ├── _mixins.scss    # SCSS mixins
 │       ├── _reset.scss     # CSS reset
 │       ├── global.scss     # Global styles
