@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../mixins';
+@use '../variables/globals' as *;
+@use '../variables/mixins' as *;
 
 // Form component styles
 // Usage (preferred): <input class="form-input" data-state="error" data-size="lg" />

@@ -1,5 +1,5 @@
-@import '../variables';
-@import '../mixins';
+@use '../variables/globals' as *;
+@use '../variables/mixins' as *;
 
 // Card component styles
 // Usage (preferred): <div class="card" data-variant="primary" data-state="active">...</div>

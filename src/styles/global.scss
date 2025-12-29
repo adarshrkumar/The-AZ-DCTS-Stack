@@ -1,10 +1,10 @@
 // OpenProps - CSS design tokens
-@import 'open-props/style';
-@import 'open-props/normalize';
+@use 'open-props/style' as *;
+@use 'open-props/normalize' as *;
 
-@import './reset';
-@import './variables/globals';
-@import './variables/mixins';
+@use './reset' as *;
+@use './variables/globals' as *;
+@use './variables/mixins' as *;
 
 // Global styles
 :root {
