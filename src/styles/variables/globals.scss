@@ -26,55 +26,58 @@ $warning-color: #f59e0b;
 $error-color: #ef4444;
 $info-color: #3b82f6;
 
-// Spacing scale
-$spacing-extra-small: 0.25rem;
-$spacing-small: 0.5rem;
-$spacing-medium: 1rem;
-$spacing-large: 1.5rem;
-$spacing-extra-large: 2rem;
-$spacing-2x-large: 3rem;
-$spacing-3x-large: 4rem;
+// Spacing scale (using OpenProps size tokens)
+$spacing-extra-small: var(--size-2);  // 0.5rem
+$spacing-small: var(--size-3);        // 1rem
+$spacing-medium: var(--size-4);       // 1.25rem
+$spacing-large: var(--size-5);        // 1.5rem
+$spacing-extra-large: var(--size-6);  // 1.75rem
+$spacing-2x-large: var(--size-8);     // 3rem
+$spacing-3x-large: var(--size-10);    // 4rem
 
 // Typography
 $font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $font-family-mono: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
 
-$font-size-extra-small: 0.75rem;
-$font-size-small: 0.875rem;
-$font-size-base: 1rem;
-$font-size-large: 1.125rem;
-$font-size-extra-large: 1.25rem;
-$font-size-2x-large: 1.5rem;
-$font-size-3x-large: 1.875rem;
-$font-size-4x-large: 2.25rem;
+// Font sizes (using OpenProps font-size tokens)
+$font-size-extra-small: var(--font-size-0);   // 0.75rem
+$font-size-small: var(--font-size-1);         // 0.875rem
+$font-size-base: var(--font-size-2);          // 1rem
+$font-size-large: var(--font-size-3);         // 1.125rem
+$font-size-extra-large: var(--font-size-4);   // 1.25rem
+$font-size-2x-large: var(--font-size-5);      // 1.5rem
+$font-size-3x-large: var(--font-size-6);      // 1.875rem
+$font-size-4x-large: var(--font-size-7);      // 2.25rem
 
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
-$font-weight-bold: 700;
+// Font weights (using OpenProps font-weight tokens)
+$font-weight-normal: var(--font-weight-4);    // 400
+$font-weight-medium: var(--font-weight-5);    // 500
+$font-weight-semibold: var(--font-weight-6);  // 600
+$font-weight-bold: var(--font-weight-7);      // 700
 
-$line-height-tight: 1.25;
-$line-height-normal: 1.5;
-$line-height-relaxed: 1.75;
+// Line heights (using OpenProps lineheight tokens)
+$line-height-tight: var(--font-lineheight-0); // 1.25
+$line-height-normal: var(--font-lineheight-3);// 1.5
+$line-height-relaxed: var(--font-lineheight-4);// 1.75
 
-// Border radius
-$radius-small: 0.25rem;
-$radius-medium: 0.375rem;
-$radius-large: 0.5rem;
-$radius-extra-large: 0.75rem;
-$radius-2x-large: 1rem;
-$radius-full: 9999px;
+// Border radius (using OpenProps radius tokens)
+$radius-small: var(--radius-2);       // 0.25rem
+$radius-medium: var(--radius-3);      // 0.5rem
+$radius-large: var(--radius-4);       // 1rem
+$radius-extra-large: var(--radius-5); // 1.5rem
+$radius-2x-large: var(--radius-6);    // 2rem
+$radius-full: var(--radius-round);    // 9999px
 
-// Shadows
-$shadow-small: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-extra-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+// Shadows (using OpenProps shadow tokens)
+$shadow-small: var(--shadow-2);       // Subtle shadow
+$shadow-medium: var(--shadow-3);      // Medium shadow
+$shadow-large: var(--shadow-4);       // Large shadow
+$shadow-extra-large: var(--shadow-6); // Extra large shadow
 
-// Transitions
-$transition-fast: 150ms ease-in-out;
-$transition-base: 300ms ease-in-out;
-$transition-slow: 500ms ease-in-out;
+// Transitions (using OpenProps easing tokens)
+$transition-fast: var(--ease-1);  // Fast spring easing
+$transition-base: var(--ease-3);  // Standard easing
+$transition-slow: var(--ease-4);  // Slow easing
 
 // Breakpoints
 $breakpoint-tablet: 640px;
