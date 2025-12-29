@@ -122,8 +122,8 @@ import '@/styles/components/button.scss';
 
 **SCSS File Organization:**
 
-- **Variables**: `src/styles/_variables.scss`
-- **Mixins**: `src/styles/_mixins.scss`
+- **Variables**: `src/styles/variables/globals.scss`
+- **Mixins**: `src/styles/variables/mixins.scss`
 - **Global styles**: `src/styles/global.scss`
 - **Component styles**: `src/styles/components/[component-name].scss`
 - **Page styles**: `src/styles/pages/[page-name].scss`
@@ -287,8 +287,9 @@ src/
 └── styles/           # SCSS files
     ├── components/   # Component styles
     ├── pages/        # Page styles
-    ├── _variables.scss
-    ├── _mixins.scss
+    ├── variables/
+    │   ├── globals.scss
+    │   └── mixins.scss
     └── global.scss
 ```
 

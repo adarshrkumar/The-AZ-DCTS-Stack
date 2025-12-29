@@ -1,0 +1,96 @@
+// Color palette
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$secondary-color: #06b6d4;
+$accent-color: #f59e0b;
+
+// Text colors
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$text-light: #9ca3af;
+$text-inverse: #ffffff;
+
+// Background colors
+$bg-primary: #ffffff;
+$bg-secondary: #f9fafb;
+$bg-tertiary: #f3f4f6;
+$bg-dark: #111827;
+
+// Border colors
+$border-color: #e5e7eb;
+$border-focus: #4f46e5;
+
+// Status colors
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$error-color: #ef4444;
+$info-color: #3b82f6;
+
+// Spacing scale (using OpenProps size tokens)
+$spacing-extra-small: var(--size-2);  // 0.5rem
+$spacing-small: var(--size-3);        // 1rem
+$spacing-medium: var(--size-4);       // 1.25rem
+$spacing-large: var(--size-5);        // 1.5rem
+$spacing-extra-large: var(--size-6);  // 1.75rem
+$spacing-2x-large: var(--size-8);     // 3rem
+$spacing-3x-large: var(--size-10);    // 4rem
+
+// Typography
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+$font-family-mono: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+
+// Font sizes (using OpenProps font-size tokens)
+$font-size-extra-small: var(--font-size-0);   // 0.75rem
+$font-size-small: var(--font-size-1);         // 0.875rem
+$font-size-base: var(--font-size-2);          // 1rem
+$font-size-large: var(--font-size-3);         // 1.125rem
+$font-size-extra-large: var(--font-size-4);   // 1.25rem
+$font-size-2x-large: var(--font-size-5);      // 1.5rem
+$font-size-3x-large: var(--font-size-6);      // 1.875rem
+$font-size-4x-large: var(--font-size-7);      // 2.25rem
+
+// Font weights (using OpenProps font-weight tokens)
+$font-weight-normal: var(--font-weight-4);    // 400
+$font-weight-medium: var(--font-weight-5);    // 500
+$font-weight-semibold: var(--font-weight-6);  // 600
+$font-weight-bold: var(--font-weight-7);      // 700
+
+// Line heights (using OpenProps lineheight tokens)
+$line-height-tight: var(--font-lineheight-0); // 1.25
+$line-height-normal: var(--font-lineheight-3);// 1.5
+$line-height-relaxed: var(--font-lineheight-4);// 1.75
+
+// Border radius (using OpenProps radius tokens)
+$radius-small: var(--radius-2);       // 0.25rem
+$radius-medium: var(--radius-3);      // 0.5rem
+$radius-large: var(--radius-4);       // 1rem
+$radius-extra-large: var(--radius-5); // 1.5rem
+$radius-2x-large: var(--radius-6);    // 2rem
+$radius-full: var(--radius-round);    // 9999px
+
+// Shadows (using OpenProps shadow tokens)
+$shadow-small: var(--shadow-2);       // Subtle shadow
+$shadow-medium: var(--shadow-3);      // Medium shadow
+$shadow-large: var(--shadow-4);       // Large shadow
+$shadow-extra-large: var(--shadow-6); // Extra large shadow
+
+// Transitions (using OpenProps easing tokens)
+$transition-fast: var(--ease-1);  // Fast spring easing
+$transition-base: var(--ease-3);  // Standard easing
+$transition-slow: var(--ease-4);  // Slow easing
+
+// Breakpoints
+$breakpoint-tablet: 640px;
+$breakpoint-desktop: 768px;
+$breakpoint-wide: 1024px;
+$breakpoint-extra-wide: 1280px;
+$breakpoint-ultra-wide: 1536px;
+
+// Z-index scale
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;

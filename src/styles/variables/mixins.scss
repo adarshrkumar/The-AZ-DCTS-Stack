@@ -1,32 +1,35 @@
-@import './variables';
+@use './globals' as *;
+
+// NOTE: All mixins below use variables from globals.scss which are now powered by OpenProps design tokens
+// This provides consistent spacing, typography, shadows, and other design primitives throughout the app
 
 // Responsive breakpoint mixins
-@mixin sm {
-  @media (min-width: $breakpoint-sm) {
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) {
     @content;
   }
 }
 
-@mixin md {
-  @media (min-width: $breakpoint-md) {
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
     @content;
   }
 }
 
-@mixin lg {
-  @media (min-width: $breakpoint-lg) {
+@mixin wide {
+  @media (min-width: $breakpoint-wide) {
     @content;
   }
 }
 
-@mixin xl {
-  @media (min-width: $breakpoint-xl) {
+@mixin extra-wide {
+  @media (min-width: $breakpoint-extra-wide) {
     @content;
   }
 }
 
-@mixin xxl {
-  @media (min-width: $breakpoint-2xl) {
+@mixin ultra-wide {
+  @media (min-width: $breakpoint-ultra-wide) {
     @content;
   }
 }
@@ -54,13 +57,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-sm $spacing-lg;
+  padding: $spacing-small $spacing-large;
   font-family: $font-family-base;
   font-size: $font-size-base;
   font-weight: $font-weight-medium;
   line-height: $line-height-normal;
   border: none;
-  border-radius: $radius-md;
+  border-radius: $radius-medium;
   cursor: pointer;
   transition: all $transition-base;
   text-decoration: none;
@@ -102,27 +105,27 @@
 @mixin card {
   background-color: $bg-primary;
   border: 1px solid $border-color;
-  border-radius: $radius-lg;
-  padding: $spacing-xl;
-  box-shadow: $shadow-sm;
+  border-radius: $radius-large;
+  padding: $spacing-extra-large;
+  box-shadow: $shadow-small;
   transition: box-shadow $transition-base;
 
   &:hover {
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-medium;
   }
 }
 
 // Input mixin
 @mixin input-base {
   width: 100%;
-  padding: $spacing-sm $spacing-md;
+  padding: $spacing-small $spacing-medium;
   font-family: $font-family-base;
   font-size: $font-size-base;
   line-height: $line-height-normal;
   color: $text-primary;
   background-color: $bg-primary;
   border: 1px solid $border-color;
-  border-radius: $radius-md;
+  border-radius: $radius-medium;
   transition: border-color $transition-fast;
 
   &:focus {
@@ -144,49 +147,49 @@
 // Container mixin
 @mixin container {
   width: 100%;
-  max-width: $breakpoint-xl;
+  max-width: $breakpoint-extra-wide;
   margin-left: auto;
   margin-right: auto;
-  padding-left: $spacing-md;
-  padding-right: $spacing-md;
+  padding-left: $spacing-medium;
+  padding-right: $spacing-medium;
 
-  @include lg {
-    padding-left: $spacing-xl;
-    padding-right: $spacing-xl;
+  @include wide {
+    padding-left: $spacing-extra-large;
+    padding-right: $spacing-extra-large;
   }
 }
 
 // Typography mixins
 @mixin heading-1 {
-  font-size: $font-size-3xl;
+  font-size: $font-size-3x-large;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   color: $text-primary;
 
-  @include md {
-    font-size: $font-size-4xl;
+  @include desktop {
+    font-size: $font-size-4x-large;
   }
 }
 
 @mixin heading-2 {
-  font-size: $font-size-2xl;
+  font-size: $font-size-2x-large;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   color: $text-primary;
 
-  @include md {
-    font-size: $font-size-3xl;
+  @include desktop {
+    font-size: $font-size-3x-large;
   }
 }
 
 @mixin heading-3 {
-  font-size: $font-size-xl;
+  font-size: $font-size-extra-large;
   font-weight: $font-weight-semibold;
   line-height: $line-height-tight;
   color: $text-primary;
 
-  @include md {
-    font-size: $font-size-2xl;
+  @include desktop {
+    font-size: $font-size-2x-large;
   }
 }
 
