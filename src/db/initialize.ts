@@ -1,6 +1,5 @@
 import { db } from './client';
 import { posts, comments } from './schema';
-import { sql } from 'drizzle-orm';
 
 /**
  * Database initialization utilities
@@ -8,18 +7,12 @@ import { sql } from 'drizzle-orm';
  */
 
 /**
- * Check if the database tables exist
+ * Check if the database tables exist by attempting a simple query
  */
 export async function checkTablesExist(): Promise<boolean> {
   try {
-    const result = await db.execute(sql`
-      SELECT EXISTS (
-        SELECT FROM information_schema.tables
-        WHERE table_schema = 'public'
-        AND table_name = 'posts'
-      );
-    `);
-    return result.rows[0]?.exists === true;
+    await db.select().from(posts).limit(1);
+    return true;
   } catch (error) {
     console.error('Error checking if tables exist:', error);
     return false;
@@ -54,7 +47,7 @@ export async function initializeDatabase(): Promise<void> {
  */
 export async function verifyConnection(): Promise<boolean> {
   try {
-    await db.execute(sql`SELECT 1`);
+    await db.select().from(posts).limit(1);
     return true;
   } catch (error) {
     console.error('Database connection failed:', error);
