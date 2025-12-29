@@ -1,4 +1,4 @@
-import { db as dbClient } from './client';
+import { db } from './client';
 import { posts, comments } from './schema';
 
 /**
@@ -7,14 +7,14 @@ import { posts, comments } from './schema';
  */
 
 // Re-export the database client for use throughout the application
-export const db = dbClient;
+export { db };
 
 /**
  * Check if the database tables exist by attempting a simple query
  */
 export async function checkTablesExist(): Promise<boolean> {
   try {
-    await dbClient.select().from(posts).limit(1);
+    await db.select().from(posts).limit(1);
     return true;
   } catch (error) {
     console.error('Error checking if tables exist:', error);
@@ -50,7 +50,7 @@ export async function initializeDatabase(): Promise<void> {
  */
 export async function verifyConnection(): Promise<boolean> {
   try {
-    await dbClient.select().from(posts).limit(1);
+    await db.select().from(posts).limit(1);
     return true;
   } catch (error) {
     console.error('Database connection failed:', error);
@@ -82,7 +82,7 @@ export async function getDatabaseHealth(): Promise<{
 export async function seedDatabase(): Promise<void> {
   try {
     // Check if data already exists
-    const existingPosts = await dbClient.select().from(posts).limit(1);
+    const existingPosts = await db.select().from(posts).limit(1);
 
     if (existingPosts.length > 0) {
       console.log('Database already contains data, skipping seed');
