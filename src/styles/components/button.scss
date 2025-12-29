@@ -36,14 +36,14 @@
   }
 
   // Size modifiers using data attributes
-  &[data-size='sm'] {
-    padding: $spacing-xs $spacing-sm;
-    font-size: $font-size-sm;
+  &[data-size='small'] {
+    padding: $spacing-extra-small $spacing-small;
+    font-size: $font-size-small;
   }
 
-  &[data-size='lg'] {
-    padding: $spacing-md $spacing-xl;
-    font-size: $font-size-lg;
+  &[data-size='large'] {
+    padding: $spacing-medium $spacing-extra-large;
+    font-size: $font-size-large;
   }
 
   // State modifiers using data attributes
@@ -80,7 +80,7 @@
   &[data-has-icon='true'] {
     display: inline-flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
 
     svg {
       width: 1.25rem;
@@ -117,14 +117,14 @@
   }
 
   // Size class chaining alternatives
-  &.sm {
-    padding: $spacing-xs $spacing-sm;
-    font-size: $font-size-sm;
+  &.small {
+    padding: $spacing-extra-small $spacing-small;
+    font-size: $font-size-small;
   }
 
-  &.lg {
-    padding: $spacing-md $spacing-xl;
-    font-size: $font-size-lg;
+  &.large {
+    padding: $spacing-medium $spacing-extra-large;
+    font-size: $font-size-large;
   }
 
   // Layout class chaining alternatives
@@ -135,7 +135,7 @@
   &.with-icon {
     display: inline-flex;
     align-items: center;
-    gap: $spacing-sm;
+    gap: $spacing-small;
 
     svg {
       width: 1.25rem;

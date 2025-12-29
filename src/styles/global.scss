@@ -34,21 +34,21 @@ body {
 // Typography
 h1 {
   @include heading-1;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-large;
 }
 
 h2 {
   @include heading-2;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
 }
 
 h3 {
   @include heading-3;
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
 }
 
 p {
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-medium;
   line-height: $line-height-relaxed;
   color: $text-secondary;
 }
@@ -91,25 +91,25 @@ a {
 }
 
 // Spacing utilities
-.mt-sm { margin-top: $spacing-sm; }
-.mt-md { margin-top: $spacing-md; }
-.mt-lg { margin-top: $spacing-lg; }
-.mt-xl { margin-top: $spacing-xl; }
+.mt-small { margin-top: $spacing-small; }
+.mt-medium { margin-top: $spacing-medium; }
+.mt-large { margin-top: $spacing-large; }
+.mt-extra-large { margin-top: $spacing-extra-large; }
 
-.mb-sm { margin-bottom: $spacing-sm; }
-.mb-md { margin-bottom: $spacing-md; }
-.mb-lg { margin-bottom: $spacing-lg; }
-.mb-xl { margin-bottom: $spacing-xl; }
+.mb-small { margin-bottom: $spacing-small; }
+.mb-medium { margin-bottom: $spacing-medium; }
+.mb-large { margin-bottom: $spacing-large; }
+.mb-extra-large { margin-bottom: $spacing-extra-large; }
 
-.pt-sm { padding-top: $spacing-sm; }
-.pt-md { padding-top: $spacing-md; }
-.pt-lg { padding-top: $spacing-lg; }
-.pt-xl { padding-top: $spacing-xl; }
+.pt-small { padding-top: $spacing-small; }
+.pt-medium { padding-top: $spacing-medium; }
+.pt-large { padding-top: $spacing-large; }
+.pt-extra-large { padding-top: $spacing-extra-large; }
 
-.pb-sm { padding-bottom: $spacing-sm; }
-.pb-md { padding-bottom: $spacing-md; }
-.pb-lg { padding-bottom: $spacing-lg; }
-.pb-xl { padding-bottom: $spacing-xl; }
+.pb-small { padding-bottom: $spacing-small; }
+.pb-medium { padding-bottom: $spacing-medium; }
+.pb-large { padding-bottom: $spacing-large; }
+.pb-extra-large { padding-bottom: $spacing-extra-large; }
 
 // Text utilities
 .text-center {

@@ -3,16 +3,16 @@
 
 // Home page styles
 .home {
-  padding: $spacing-3xl 0;
+  padding: $spacing-3x-large 0;
 
   &__header {
     text-align: center;
-    margin-bottom: $spacing-3xl;
+    margin-bottom: $spacing-3x-large;
   }
 
   &__title {
     @include heading-1;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-medium;
     background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -20,36 +20,36 @@
   }
 
   &__subtitle {
-    font-size: $font-size-lg;
+    font-size: $font-size-large;
     color: $text-secondary;
     max-width: 600px;
     margin: 0 auto;
 
-    @include md {
-      font-size: $font-size-xl;
+    @include desktop {
+      font-size: $font-size-extra-large;
     }
   }
 
   &__features {
     display: grid;
     grid-template-columns: 1fr;
-    gap: $spacing-lg;
-    margin-bottom: $spacing-3xl;
+    gap: $spacing-large;
+    margin-bottom: $spacing-3x-large;
 
-    @include sm {
+    @include tablet {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @include lg {
+    @include wide {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
   &__feature {
     h3 {
-      font-size: $font-size-xl;
+      font-size: $font-size-extra-large;
       font-weight: $font-weight-semibold;
-      margin-bottom: $spacing-sm;
+      margin-bottom: $spacing-small;
       color: $text-primary;
     }
 
@@ -62,18 +62,18 @@
 
   &__cta {
     text-align: center;
-    padding: $spacing-3xl 0;
+    padding: $spacing-3x-large 0;
     border-top: 1px solid $border-color;
 
     h2 {
       @include heading-2;
-      margin-bottom: $spacing-xl;
+      margin-bottom: $spacing-extra-large;
     }
   }
 
   &__cta-buttons {
     @include flex-center;
-    gap: $spacing-lg;
+    gap: $spacing-large;
     flex-wrap: wrap;
   }
 }

@@ -14,14 +14,14 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: $shadow-lg;
+    box-shadow: $shadow-large;
   }
 
   &__title {
-    font-size: $font-size-xl;
+    font-size: $font-size-extra-large;
     font-weight: $font-weight-semibold;
     color: $text-primary;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-medium;
   }
 
   &__content {
@@ -62,7 +62,7 @@
   // State modifiers using data attributes
   &[data-state='active'] {
     border-color: $primary-color;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-medium;
   }
 
   &[data-state='disabled'] {
@@ -93,24 +93,24 @@
 
   // Layout modifiers using data attributes
   &[data-padding='compact'] {
-    padding: $spacing-md;
+    padding: $spacing-medium;
   }
 
   &[data-padding='comfortable'] {
-    padding: $spacing-2xl;
+    padding: $spacing-2x-large;
   }
 
   &[data-hover='lift'] {
     &:hover {
       transform: translateY(-4px);
-      box-shadow: $shadow-xl;
+      box-shadow: $shadow-extra-large;
     }
   }
 
   &[data-hover='none'] {
     &:hover {
       transform: none;
-      box-shadow: $shadow-sm;
+      box-shadow: $shadow-small;
     }
   }
 
@@ -143,7 +143,7 @@
   // State class chaining alternatives
   &.active {
     border-color: $primary-color;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-medium;
   }
 
   &.disabled {

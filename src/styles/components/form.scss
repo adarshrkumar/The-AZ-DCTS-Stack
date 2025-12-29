@@ -10,13 +10,13 @@
   max-width: 600px;
 
   &-group {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-large;
   }
 
   &-label {
     display: block;
-    margin-bottom: $spacing-xs;
-    font-size: $font-size-sm;
+    margin-bottom: $spacing-extra-small;
+    font-size: $font-size-small;
     font-weight: $font-weight-medium;
     color: $text-primary;
 
@@ -64,14 +64,14 @@
     }
 
     // Size modifiers using data attributes
-    &[data-size='sm'] {
-      padding: $spacing-xs $spacing-sm;
-      font-size: $font-size-sm;
+    &[data-size='small'] {
+      padding: $spacing-extra-small $spacing-small;
+      font-size: $font-size-small;
     }
 
-    &[data-size='lg'] {
-      padding: $spacing-md $spacing-lg;
-      font-size: $font-size-lg;
+    &[data-size='large'] {
+      padding: $spacing-medium $spacing-large;
+      font-size: $font-size-large;
     }
 
     // Alternative: class chaining for states
@@ -100,14 +100,14 @@
     }
 
     // Size class chaining alternatives
-    &.sm {
-      padding: $spacing-xs $spacing-sm;
-      font-size: $font-size-sm;
+    &.small {
+      padding: $spacing-extra-small $spacing-small;
+      font-size: $font-size-small;
     }
 
-    &.lg {
-      padding: $spacing-md $spacing-lg;
-      font-size: $font-size-lg;
+    &.large {
+      padding: $spacing-medium $spacing-large;
+      font-size: $font-size-large;
     }
   }
 
@@ -132,15 +132,15 @@
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-    background-position: right $spacing-sm center;
+    background-position: right $spacing-small center;
     background-repeat: no-repeat;
     background-size: 1.5rem 1.5rem;
-    padding-right: $spacing-2xl;
+    padding-right: $spacing-2x-large;
   }
 
   &-helper {
-    margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    margin-top: $spacing-extra-small;
+    font-size: $font-size-small;
     color: $text-secondary;
 
     &[data-state='error'] {
@@ -157,8 +157,8 @@
   }
 
   &-error {
-    margin-top: $spacing-xs;
-    font-size: $font-size-sm;
+    margin-top: $spacing-extra-small;
+    font-size: $font-size-small;
     color: $error-color;
   }
 
@@ -166,8 +166,8 @@
   &-radio {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
-    margin-bottom: $spacing-sm;
+    gap: $spacing-small;
+    margin-bottom: $spacing-small;
 
     input {
       width: 1.125rem;
@@ -206,8 +206,8 @@
 
   &-actions {
     @include flex-between;
-    margin-top: $spacing-xl;
-    gap: $spacing-md;
+    margin-top: $spacing-extra-large;
+    gap: $spacing-medium;
 
     &[data-layout='stack'] {
       flex-direction: column;
@@ -229,7 +229,7 @@
       justify-content: flex-end;
     }
 
-    @media (max-width: $breakpoint-sm) {
+    @media (max-width: $breakpoint-tablet) {
       flex-direction: column;
 
       button {
