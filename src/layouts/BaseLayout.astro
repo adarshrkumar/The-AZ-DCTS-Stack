@@ -7,14 +7,16 @@
  * - Global styles applied via import in the head
  */
 
+import { siteConfig } from '@/lib/config';
+
 interface Props {
   title?: string;
   description?: string;
 }
 
 const {
-  title = 'A-DCTS Stack',
-  description = 'Full-stack application built with Astro, TypeScript, Drizzle, Clerk, and SCSS',
+  title = siteConfig.stackName,
+  description = siteConfig.stackDescription,
 } = Astro.props;
 ---
 
