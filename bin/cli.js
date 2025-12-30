@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * AZ-DCTS Stack CLI
- * Command-line utility for scaffolding new projects with the AZ-DCTS Stack
+ * A-DCTS Stack CLI
+ * Command-line utility for scaffolding new projects with the A-DCTS Stack
  */
 
 import { fileURLToPath } from 'node:url';
@@ -267,15 +267,15 @@ const args = process.argv.slice(2);
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log(`
 ${colors.bright}${colors.cyan}╔════════════════════════════════════════════════════════════════════╗
-║                      AZ-DCTS Stack CLI v1.0                        ║
+║                       A-DCTS Stack CLI v1.0                        ║
 ║          Production-Ready Full-Stack Application Generator        ║
 ╚════════════════════════════════════════════════════════════════════╝${colors.reset}
 
 ${colors.bright}${colors.green}USAGE${colors.reset}
-  ${colors.cyan}npx az-dcts-stack${colors.reset} ${colors.yellow}[project-name]${colors.reset} ${colors.yellow}[options]${colors.reset}
+  ${colors.cyan}npx a-dcts-stack${colors.reset} ${colors.yellow}[project-name]${colors.reset} ${colors.yellow}[options]${colors.reset}
 
 ${colors.bright}${colors.green}DESCRIPTION${colors.reset}
-  The AZ-DCTS Stack CLI scaffolds production-ready full-stack applications
+  The A-DCTS Stack CLI scaffolds production-ready full-stack applications
   with best-in-class technologies. Create modern web apps with type safety,
   authentication, database operations, and AI integration out of the box.
 
@@ -324,19 +324,19 @@ ${colors.bright}${colors.green}OPTIONS${colors.reset}
 
 ${colors.bright}${colors.green}EXAMPLES${colors.reset}
   ${colors.yellow}# Fully interactive - prompts for everything${colors.reset}
-  npx az-dcts-stack
+  npx a-dcts-stack
 
   ${colors.yellow}# Provide name, get prompted for install/setup options${colors.reset}
-  npx az-dcts-stack my-awesome-app
+  npx a-dcts-stack my-awesome-app
 
   ${colors.yellow}# Auto-install dependencies, prompt for database setup${colors.reset}
-  npx az-dcts-stack my-blog --install
+  npx a-dcts-stack my-blog --install
 
   ${colors.yellow}# Full automatic setup (recommended for experienced users)${colors.reset}
-  npx az-dcts-stack my-app --install --setup-db
+  npx a-dcts-stack my-app --install --setup-db
 
   ${colors.yellow}# Short flags work too${colors.reset}
-  npx az-dcts-stack my-app -i --db
+  npx a-dcts-stack my-app -i --db
 
 ${colors.bright}${colors.green}WHAT GETS CREATED${colors.reset}
   ${colors.cyan}Project Structure:${colors.reset}
@@ -420,8 +420,8 @@ ${colors.bright}${colors.green}RESOURCES${colors.reset}
   • Exa Search:   https://docs.exa.ai
 
   ${colors.cyan}GitHub:${colors.reset}
-  • Repository:   https://github.com/yourusername/az-dcts-stack
-  • Issues:       https://github.com/yourusername/az-dcts-stack/issues
+  • Repository:   https://github.com/yourusername/a-dcts-stack
+  • Issues:       https://github.com/yourusername/a-dcts-stack/issues
 
 ${colors.bright}${colors.green}TIPS${colors.reset}
   ${colors.yellow}•${colors.reset} Use ${colors.cyan}--install${colors.reset} flag to save time on dependency installation
@@ -455,7 +455,7 @@ const needsInteractive = !projectName || !installFlagPassed || (!setupDbFlagPass
 
 if (needsInteractive && !projectName) {
   log('\n' + '='.repeat(60), 'bright');
-  log('Welcome to AZ-DCTS Stack!', 'cyan');
+  log('Welcome to A-DCTS Stack!', 'cyan');
   log('='.repeat(60), 'bright');
   console.log();
 }
@@ -497,5 +497,5 @@ const flags = {
   setupDb: shouldSetupDb,
 };
 
-log(`\n${colors.bright}${colors.cyan}Creating AZ-DCTS Stack project...${colors.reset}\n`);
+log(`\n${colors.bright}${colors.cyan}Creating A-DCTS Stack project...${colors.reset}\n`);
 await createProject(projectName, flags);

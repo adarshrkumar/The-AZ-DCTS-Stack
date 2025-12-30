@@ -1,13 +1,13 @@
 # Installation Guide
 
-This guide provides detailed shell commands for initializing a new Astro project with the AZ-DCTS Stack.
+This guide provides detailed shell commands for initializing a new Astro project with the A-DCTS Stack.
 
 ## Quick Start
 
 ### Option 1: Using the CLI (Recommended)
 
 ```bash
-npx az-dcts-stack create my-app
+npx a-dcts-stack create my-app
 cd my-app
 npm install
 ```
@@ -20,8 +20,8 @@ If you want to build the stack manually from scratch, follow these steps:
 
 ```bash
 # Create a new directory
-mkdir my-az-dcts-app
-cd my-az-dcts-app
+mkdir my-a-dcts-app
+cd my-a-dcts-app
 
 # Initialize npm project
 npm init -y
@@ -352,7 +352,7 @@ vercel env add OPENAI_API_KEY
 
 If you encounter issues:
 
-1. Check the [GitHub Issues](https://github.com/yourusername/az-dcts-stack/issues)
+1. Check the [GitHub Issues](https://github.com/yourusername/a-dcts-stack/issues)
 2. Review the official documentation for each technology
 3. Ask in the community Discord/Slack
 

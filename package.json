@@ -1,10 +1,10 @@
 {
-  "name": "az-dcts-stack",
+  "name": "a-dcts-stack",
   "version": "1.0.0",
-  "description": "AZ-DCTS Stack - Astro, Zod, Drizzle, Clerk, TypeScript, SCSS CLI utility",
+  "description": "A-DCTS Stack - Astro, Drizzle, Clerk, TypeScript, SCSS CLI utility",
   "type": "module",
   "bin": {
-    "az-dcts": "./bin/cli.js"
+    "a-dcts": "./bin/cli.js"
   },
   "scripts": {
     "dev": "astro dev",
