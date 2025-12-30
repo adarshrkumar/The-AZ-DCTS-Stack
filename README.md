@@ -114,7 +114,7 @@ Your application will be available at `http://localhost:4321`
 ├── src/
 │   ├── components/         # Reusable Astro components
 │   ├── db/
-│   │   ├── client.ts      # Database client configuration
+│   │   ├── initialize.ts  # Database client and initialization
 │   │   ├── schema.ts      # Drizzle ORM schema definitions
 │   │   └── validations.ts # Zod validation schemas
 │   ├── layouts/
@@ -270,7 +270,7 @@ Create type-safe API routes:
 ```typescript
 // src/pages/api/posts.ts
 import type { APIRoute } from 'astro';
-import { db } from '@/db/client';
+import { db } from '@/db/initialize';
 import { posts } from '@/db/schema';
 import { createPostSchema } from '@/db/validations';
 
