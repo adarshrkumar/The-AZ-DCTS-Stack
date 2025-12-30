@@ -1,6 +1,6 @@
-# Contributing to AZ-DCTS Stack
+# Contributing to A-DCTS Stack
 
-Thank you for your interest in contributing to the AZ-DCTS Stack! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the A-DCTS Stack! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 
@@ -32,8 +32,8 @@ We welcome feature requests! Please create an issue with:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/yourusername/az-dcts-stack.git
-   cd az-dcts-stack
+   git clone https://github.com/yourusername/a-dcts-stack.git
+   cd a-dcts-stack
    ```
 
 2. **Create a feature branch**
@@ -327,4 +327,4 @@ Contributors will be recognized in:
 - Release notes
 - Project documentation
 
-Thank you for contributing to AZ-DCTS Stack!
+Thank you for contributing to A-DCTS Stack!
