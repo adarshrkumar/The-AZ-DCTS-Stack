@@ -37,7 +37,7 @@
     "@clerk/clerk-react": "^5.17.3",
     "@rocicorp/zero": "^0.2.0",
     "@vercel/postgres": "^0.10.0",
-    "ai": "^4.1.0",
+    "ai": "^5.0.0",
     "astro": "^4.16.18",
     "cheerio": "^1.0.0",
     "drizzle-orm": "^0.36.4",
