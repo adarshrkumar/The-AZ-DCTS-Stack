@@ -201,6 +201,30 @@ EXA_API_KEY="..."
       await setupDatabase(targetDir);
     }
 
+    // Step 8: Vercel CLI login (if dependencies were installed)
+    if (options.install) {
+      logStep(8, 'Vercel CLI setup...');
+      const shouldLoginVercel = await promptYesNo(
+        'Login to Vercel now? (You can deploy immediately after setup)',
+        true
+      );
+
+      if (shouldLoginVercel) {
+        try {
+          logStep('Vercel', 'Launching Vercel CLI login...');
+          execSync('npx vercel login', {
+            cwd: targetDir,
+            stdio: 'inherit',
+          });
+          logSuccess('Vercel login completed');
+        } catch (error) {
+          logWarning('Vercel login skipped or failed. You can login later with: npx vercel login');
+        }
+      } else {
+        console.log(`  ${colors.yellow}ℹ${colors.reset} You can login to Vercel later with: ${colors.cyan}npx vercel login${colors.reset}`);
+      }
+    }
+
     // Display next steps
     log('\n' + '='.repeat(60), 'bright');
     log('🎉 Project created successfully!', 'green');
@@ -221,6 +245,9 @@ EXA_API_KEY="..."
     }
 
     console.log(`  ${step++}. ${colors.cyan}npm run dev${colors.reset} - Start development server`);
+
+    console.log('\nReady to deploy?');
+    console.log(`  ${colors.cyan}npx vercel${colors.reset} - Deploy to Vercel (login first if you haven't)`);
 
     console.log('\nDocumentation:');
     console.log(`  • Astro: ${colors.cyan}https://astro.build${colors.reset}`);

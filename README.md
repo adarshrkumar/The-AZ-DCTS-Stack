@@ -46,6 +46,7 @@ The CLI will interactively prompt you for any options you don't provide:
 - **Project name** - if not provided as argument
 - **Install dependencies** - if `--install` flag not provided
 - **Setup database** - if `--setup-db` flag not provided (only when installing)
+- **Vercel login** - prompted after installation to enable immediate deployment
 
 ### Manual Installation
 
@@ -332,12 +333,14 @@ export const onRequest = clerkMiddleware();
 
 ### Vercel (Recommended)
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+The Vercel CLI is already included in the project! If you used the CLI setup, you may already be logged in.
 
-# Deploy
-vercel
+```bash
+# Login to Vercel (if not already logged in)
+npx vercel login
+
+# Deploy to production
+npx vercel --prod
 ```
 
 ### Environment Variables on Vercel
