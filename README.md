@@ -140,16 +140,17 @@ Your application will be available at `http://localhost:4321`
 
 ## 🎨 SCSS Architecture
 
-This stack enforces a strict separation of concerns for styling:
+This stack enforces a strict separation of concerns for styling with **semantic, readable class names** - no utility classes like Tailwind.
 
 ### Rules
 
-1. **No inline `<style>` tags** in `.astro` files (except for truly standalone components)
-2. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
-3. **Component-specific styles** in `src/styles/components/`
-4. **Page-specific styles** in `src/styles/pages/`
-5. **Use data attributes for modifiers** (preferred over BEM modifier classes)
-6. **Use class chaining** when data attributes aren't appropriate
+1. **Semantic class names** - Use readable, meaningful class names (e.g., `.btn`, `.card`, `.header`) instead of utility classes (e.g., `.px-4`, `.bg-blue-500`)
+2. **No inline `<style>` tags** in `.astro` files (except for truly standalone components)
+3. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
+4. **Component-specific styles** in `src/styles/components/`
+5. **Page-specific styles** in `src/styles/pages/`
+6. **Use data attributes for modifiers** (preferred over BEM modifier classes)
+7. **Use class chaining** when data attributes aren't appropriate
 
 ### Example Usage
 
@@ -199,6 +200,8 @@ import '@/styles/pages/example.scss';
 
 ### Available Mixins
 
+The stack provides readable, semantic mixins instead of cryptic utility names:
+
 ```scss
 @import '@/styles/mixins';
 
@@ -208,6 +211,22 @@ import '@/styles/pages/example.scss';
   @include button-primary;   // Primary button styles
   @include heading-1;        // H1 typography
 }
+```
+
+### SCSS Variables
+
+Use descriptive variable names that clearly indicate their purpose:
+
+```scss
+// ✅ Good: Readable, semantic names
+$color-primary: #007bff;
+$spacing-large: 2rem;
+$border-radius-default: 0.5rem;
+$font-size-heading: 2rem;
+
+// ❌ Avoid: Cryptic abbreviations
+$clr-1: #007bff;
+$sp-lg: 2rem;
 ```
 
 ## 🗄️ Database Operations
