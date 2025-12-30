@@ -1,14 +1,14 @@
 import type { APIRoute } from 'astro';
 import { streamText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
 import { z } from 'zod';
 
 /**
  * Vercel AI SDK Chat API Route
- * Demonstrates streaming text generation with OpenAI
+ * Uses AI Gateway pattern - no provider-specific packages needed!
+ * Just pass model strings like 'openai/gpt-4o' or 'anthropic/claude-3-5-sonnet-20241022'
  *
  * Environment variables required:
- * - OPENAI_API_KEY: Your OpenAI API key
+ * - OPENAI_API_KEY: Your OpenAI API key (or other provider keys)
  */
 
 // Validate request schema
@@ -19,14 +19,9 @@ const requestSchema = z.object({
       content: z.string(),
     })
   ),
-  model: z.string().optional().default('gpt-4-turbo-preview'),
+  model: z.string().optional().default('openai/gpt-4o'),
   temperature: z.number().min(0).max(2).optional().default(0.7),
   maxTokens: z.number().positive().optional().default(1000),
-});
-
-// Initialize OpenAI client
-const openai = createOpenAI({
-  apiKey: import.meta.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY,
 });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -50,12 +45,13 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const validatedData = requestSchema.parse(body);
 
-    // Stream the response using Vercel AI SDK
+    // Stream the response using Vercel AI SDK with AI Gateway
     const result = streamText({
-      model: openai(validatedData.model),
+      model: validatedData.model, // Use model string directly (e.g., 'openai/gpt-4o')
       messages: validatedData.messages,
       temperature: validatedData.temperature,
       maxTokens: validatedData.maxTokens,
+      apiKey: import.meta.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY,
     });
 
     // Return the stream response

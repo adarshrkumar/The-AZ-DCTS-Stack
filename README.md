@@ -289,28 +289,31 @@ export const POST: APIRoute = async ({ request }) => {
 
 ## 🤖 AI Integration
 
-The stack includes Vercel AI SDK for seamless AI integration:
+The stack includes Vercel AI SDK with AI Gateway for seamless AI integration - no provider-specific packages needed!
 
 ```typescript
 // src/pages/api/chat.ts
+import type { APIRoute } from 'astro';
 import { streamText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
-
-const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export const POST: APIRoute = async ({ request }) => {
   const { messages } = await request.json();
 
   const result = streamText({
-    model: openai('gpt-4-turbo-preview'),
+    model: 'openai/gpt-4o',  // Use model string directly - supports any provider
     messages,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   return result.toDataStreamResponse();
 };
 ```
+
+**Supported model formats:**
+- OpenAI: `openai/gpt-4o`, `openai/gpt-4-turbo`
+- Anthropic: `anthropic/claude-3-5-sonnet-20241022`
+- Google: `google/gemini-1.5-pro`
+- And many more providers without extra dependencies!
 
 ## 🔐 Authentication
 
