@@ -14,6 +14,7 @@ The **ATSDC Stack** is a carefully curated combination of modern web technologie
 
 ### Additional Technologies
 
+- **Zero** - Local-first sync engine for real-time data synchronization
 - **Zod** - TypeScript-first schema validation with runtime type safety
 - **Vercel AI SDK** - Seamless integration with AI language models
 - **NanoID** - Secure, URL-friendly unique identifiers for database records
@@ -45,6 +46,7 @@ The CLI will interactively prompt you for any options you don't provide:
 - **Project name** - if not provided as argument
 - **Install dependencies** - if `--install` flag not provided
 - **Setup database** - if `--setup-db` flag not provided (only when installing)
+- **Vercel login** - prompted after installation to enable immediate deployment
 
 ### Manual Installation
 
@@ -61,7 +63,9 @@ npm install
 
 ### 1. Environment Variables
 
-Copy `.env.example` to `.env` and configure your environment variables:
+**Note:** When using the CLI (`npx create-atsdc-stack`), the `.env` file is automatically created from `.env.example` - no manual copying needed!
+
+If you're setting up manually, copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
@@ -76,7 +80,13 @@ Required environment variables:
 
 ### 2. Database Setup
 
-Push your database schema to PostgreSQL:
+**Note:** When using the CLI with the `--setup-db` flag, the database schema is automatically pushed for you!
+
+```bash
+npx create-atsdc-stack my-app --install --setup-db
+```
+
+If setting up manually or if you skipped the automatic setup, push your database schema to PostgreSQL:
 
 ```bash
 npm run db:push
@@ -105,7 +115,7 @@ Your application will be available at `http://localhost:4321`
 ├── src/
 │   ├── components/         # Reusable Astro components
 │   ├── db/
-│   │   ├── client.ts      # Database client configuration
+│   │   ├── initialize.ts  # Database client and initialization
 │   │   ├── schema.ts      # Drizzle ORM schema definitions
 │   │   └── validations.ts # Zod validation schemas
 │   ├── layouts/
@@ -131,16 +141,17 @@ Your application will be available at `http://localhost:4321`
 
 ## 🎨 SCSS Architecture
 
-This stack enforces a strict separation of concerns for styling:
+This stack enforces a strict separation of concerns for styling with **semantic, readable class names** - no utility classes like Tailwind.
 
 ### Rules
 
-1. **No inline `<style>` tags** in `.astro` files (except for truly standalone components)
-2. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
-3. **Component-specific styles** in `src/styles/components/`
-4. **Page-specific styles** in `src/styles/pages/`
-5. **Use data attributes for modifiers** (preferred over BEM modifier classes)
-6. **Use class chaining** when data attributes aren't appropriate
+1. **Semantic class names** - Use readable, meaningful class names (e.g., `.btn`, `.card`, `.header`) instead of utility classes (e.g., `.px-4`, `.bg-blue-500`)
+2. **No inline `<style>` tags** in `.astro` files (except for truly standalone components)
+3. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
+4. **Component-specific styles** in `src/styles/components/`
+5. **Page-specific styles** in `src/styles/pages/`
+6. **Use data attributes for modifiers** (preferred over BEM modifier classes)
+7. **Use class chaining** when data attributes aren't appropriate
 
 ### Example Usage
 
@@ -190,6 +201,8 @@ import '@/styles/pages/example.scss';
 
 ### Available Mixins
 
+The stack provides readable, semantic mixins instead of cryptic utility names:
+
 ```scss
 @import '@/styles/mixins';
 
@@ -199,6 +212,22 @@ import '@/styles/pages/example.scss';
   @include button-primary;   // Primary button styles
   @include heading-1;        // H1 typography
 }
+```
+
+### SCSS Variables
+
+Use descriptive variable names that clearly indicate their purpose:
+
+```scss
+// ✅ Good: Readable, semantic names
+$color-primary: #007bff;
+$spacing-large: 2rem;
+$border-radius-default: 0.5rem;
+$font-size-heading: 2rem;
+
+// ❌ Avoid: Cryptic abbreviations
+$clr-1: #007bff;
+$sp-lg: 2rem;
 ```
 
 ## 🗄️ Database Operations
@@ -242,7 +271,7 @@ Create type-safe API routes:
 ```typescript
 // src/pages/api/posts.ts
 import type { APIRoute } from 'astro';
-import { db } from '@/db/client';
+import { db } from '@/db/initialize';
 import { posts } from '@/db/schema';
 import { createPostSchema } from '@/db/validations';
 
@@ -261,28 +290,33 @@ export const POST: APIRoute = async ({ request }) => {
 
 ## 🤖 AI Integration
 
-The stack includes Vercel AI SDK for seamless AI integration:
+The stack includes Vercel AI SDK with AI Gateway for seamless AI integration - no provider-specific packages needed!
+
+**Note:** AI Gateway requires Vercel AI SDK v5.0.0 or later (already configured in this stack).
 
 ```typescript
 // src/pages/api/chat.ts
+import type { APIRoute } from 'astro';
 import { streamText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
-
-const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export const POST: APIRoute = async ({ request }) => {
   const { messages } = await request.json();
 
   const result = streamText({
-    model: openai('gpt-4-turbo-preview'),
+    model: 'openai/gpt-4o',  // Use model string directly - supports any provider
     messages,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   return result.toDataStreamResponse();
 };
 ```
+
+**Supported model formats:**
+- OpenAI: `openai/gpt-4o`, `openai/gpt-4-turbo`
+- Anthropic: `anthropic/claude-3-5-sonnet-20241022`
+- Google: `google/gemini-1.5-pro`
+- And many more providers without extra dependencies!
 
 ## 🔐 Authentication
 
@@ -299,12 +333,14 @@ export const onRequest = clerkMiddleware();
 
 ### Vercel (Recommended)
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+The Vercel CLI is already included in the project! If you used the CLI setup, you may already be logged in.
 
-# Deploy
-vercel
+```bash
+# Login to Vercel (if not already logged in)
+npx vercel login
+
+# Deploy to production
+npx vercel --prod
 ```
 
 ### Environment Variables on Vercel
@@ -319,6 +355,7 @@ Set these in your Vercel project settings:
 - [Astro Documentation](https://docs.astro.build)
 - [Drizzle ORM Documentation](https://orm.drizzle.team/docs)
 - [Clerk Documentation](https://clerk.com/docs)
+- [Zero Sync Documentation](https://zero.rocicorp.dev)
 - [Zod Documentation](https://zod.dev)
 - [Vercel AI SDK Documentation](https://sdk.vercel.ai/docs)
 
@@ -346,9 +383,11 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 1. **Type Safety** - TypeScript + Drizzle + Zod ensure type safety from database to frontend
 2. **Performance** - Astro's zero-JS by default approach for maximum performance
-3. **Developer Experience** - Modern tooling with excellent IDE support
-4. **Scalability** - PostgreSQL + serverless architecture scales effortlessly
-5. **Security** - Clerk handles authentication, Zod validates inputs
-6. **AI-Ready** - Vercel AI SDK integration for modern AI features
-7. **PWA Support** - Offline-first capabilities with Vite PWA
-8. **Clean Architecture** - Enforced separation of concerns, especially for styles
+3. **Real-time Sync** - Zero provides local-first data synchronization for responsive UIs
+4. **Developer Experience** - Modern tooling with excellent IDE support and automated setup
+5. **Scalability** - PostgreSQL + serverless architecture scales effortlessly
+6. **Security** - Clerk handles authentication, Zod validates inputs
+7. **AI-Ready** - Vercel AI SDK integration for modern AI features
+8. **PWA Support** - Offline-first capabilities with Vite PWA
+9. **Clean Architecture** - Enforced separation of concerns, especially for styles
+10. **Quick Start** - Automated environment setup and database initialization

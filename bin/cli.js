@@ -236,6 +236,31 @@ EXA_API_KEY="..."
 
     log('\n' + '='.repeat(60), 'bright');
 
+    // Step 8: Vercel CLI login (if dependencies were installed) - at the very end
+    if (options.install) {
+      const shouldLoginVercel = await promptYesNo(
+        '\nLogin to Vercel now?',
+        true
+      );
+
+      if (shouldLoginVercel) {
+        try {
+          log('\n' + '='.repeat(60), 'bright');
+          logStep('Vercel', 'Launching Vercel CLI login...');
+          execSync('npx vercel login', {
+            cwd: targetDir,
+            stdio: 'inherit',
+          });
+          logSuccess('Vercel login completed');
+          log('='.repeat(60), 'bright');
+        } catch (error) {
+          logWarning('Vercel login skipped or failed. You can login later with: npx vercel login');
+        }
+      } else {
+        console.log(`\n  ${colors.yellow}ℹ${colors.reset} You can login to Vercel later with: ${colors.cyan}npx vercel login${colors.reset}`);
+      }
+    }
+
   } catch (error) {
     logError(`Failed to create project: ${error.message}`);
     process.exit(1);
