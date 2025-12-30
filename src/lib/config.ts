@@ -6,7 +6,7 @@
 /**
  * The core stack identifier - change this in ONE place to update everywhere
  */
-const STACK_SHORT_NAME = 'A-DCTS';
+const STACK_SHORT_NAME = 'ATSDC';
 
 export const siteConfig = {
   /**
@@ -28,5 +28,5 @@ export const siteConfig = {
   /**
    * GitHub repository URL
    */
-  githubUrl: 'https://github.com/yourusername/a-dcts-stack',
+  githubUrl: 'https://github.com/yourusername/atsdc-stack',
 } as const;
