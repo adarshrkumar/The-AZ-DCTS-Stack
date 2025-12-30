@@ -246,9 +246,6 @@ EXA_API_KEY="..."
 
     console.log(`  ${step++}. ${colors.cyan}npm run dev${colors.reset} - Start development server`);
 
-    console.log('\nReady to deploy?');
-    console.log(`  ${colors.cyan}npx vercel${colors.reset} - Deploy to Vercel (login first if you haven't)`);
-
     console.log('\nDocumentation:');
     console.log(`  • Astro: ${colors.cyan}https://astro.build${colors.reset}`);
     console.log(`  • Drizzle ORM: ${colors.cyan}https://orm.drizzle.team${colors.reset}`);
