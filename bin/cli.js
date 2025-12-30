@@ -201,30 +201,6 @@ EXA_API_KEY="..."
       await setupDatabase(targetDir);
     }
 
-    // Step 8: Vercel CLI login (if dependencies were installed)
-    if (options.install) {
-      logStep(8, 'Vercel CLI setup...');
-      const shouldLoginVercel = await promptYesNo(
-        'Login to Vercel now?',
-        true
-      );
-
-      if (shouldLoginVercel) {
-        try {
-          logStep('Vercel', 'Launching Vercel CLI login...');
-          execSync('npx vercel login', {
-            cwd: targetDir,
-            stdio: 'inherit',
-          });
-          logSuccess('Vercel login completed');
-        } catch (error) {
-          logWarning('Vercel login skipped or failed. You can login later with: npx vercel login');
-        }
-      } else {
-        console.log(`  ${colors.yellow}ℹ${colors.reset} You can login to Vercel later with: ${colors.cyan}npx vercel login${colors.reset}`);
-      }
-    }
-
     // Display next steps
     log('\n' + '='.repeat(60), 'bright');
     log('🎉 Project created successfully!', 'green');
@@ -259,6 +235,31 @@ EXA_API_KEY="..."
     console.log(`  • Exa - AI search in ${colors.cyan}src/lib/exa-search.ts${colors.reset}`);
 
     log('\n' + '='.repeat(60), 'bright');
+
+    // Step 8: Vercel CLI login (if dependencies were installed) - at the very end
+    if (options.install) {
+      const shouldLoginVercel = await promptYesNo(
+        '\nLogin to Vercel now?',
+        true
+      );
+
+      if (shouldLoginVercel) {
+        try {
+          log('\n' + '='.repeat(60), 'bright');
+          logStep('Vercel', 'Launching Vercel CLI login...');
+          execSync('npx vercel login', {
+            cwd: targetDir,
+            stdio: 'inherit',
+          });
+          logSuccess('Vercel login completed');
+          log('='.repeat(60), 'bright');
+        } catch (error) {
+          logWarning('Vercel login skipped or failed. You can login later with: npx vercel login');
+        }
+      } else {
+        console.log(`\n  ${colors.yellow}ℹ${colors.reset} You can login to Vercel later with: ${colors.cyan}npx vercel login${colors.reset}`);
+      }
+    }
 
   } catch (error) {
     logError(`Failed to create project: ${error.message}`);
