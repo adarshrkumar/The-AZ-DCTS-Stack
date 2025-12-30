@@ -14,6 +14,7 @@ The **ATSDC Stack** is a carefully curated combination of modern web technologie
 
 ### Additional Technologies
 
+- **Zero** - Local-first sync engine for real-time data synchronization
 - **Zod** - TypeScript-first schema validation with runtime type safety
 - **Vercel AI SDK** - Seamless integration with AI language models
 - **NanoID** - Secure, URL-friendly unique identifiers for database records
@@ -61,7 +62,9 @@ npm install
 
 ### 1. Environment Variables
 
-Copy `.env.example` to `.env` and configure your environment variables:
+**Note:** When using the CLI (`npx create-atsdc-stack`), the `.env` file is automatically created from `.env.example` - no manual copying needed!
+
+If you're setting up manually, copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
@@ -76,7 +79,13 @@ Required environment variables:
 
 ### 2. Database Setup
 
-Push your database schema to PostgreSQL:
+**Note:** When using the CLI with the `--setup-db` flag, the database schema is automatically pushed for you!
+
+```bash
+npx create-atsdc-stack my-app --install --setup-db
+```
+
+If setting up manually or if you skipped the automatic setup, push your database schema to PostgreSQL:
 
 ```bash
 npm run db:push
@@ -319,6 +328,7 @@ Set these in your Vercel project settings:
 - [Astro Documentation](https://docs.astro.build)
 - [Drizzle ORM Documentation](https://orm.drizzle.team/docs)
 - [Clerk Documentation](https://clerk.com/docs)
+- [Zero Sync Documentation](https://zero.rocicorp.dev)
 - [Zod Documentation](https://zod.dev)
 - [Vercel AI SDK Documentation](https://sdk.vercel.ai/docs)
 
@@ -346,9 +356,11 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 1. **Type Safety** - TypeScript + Drizzle + Zod ensure type safety from database to frontend
 2. **Performance** - Astro's zero-JS by default approach for maximum performance
-3. **Developer Experience** - Modern tooling with excellent IDE support
-4. **Scalability** - PostgreSQL + serverless architecture scales effortlessly
-5. **Security** - Clerk handles authentication, Zod validates inputs
-6. **AI-Ready** - Vercel AI SDK integration for modern AI features
-7. **PWA Support** - Offline-first capabilities with Vite PWA
-8. **Clean Architecture** - Enforced separation of concerns, especially for styles
+3. **Real-time Sync** - Zero provides local-first data synchronization for responsive UIs
+4. **Developer Experience** - Modern tooling with excellent IDE support and automated setup
+5. **Scalability** - PostgreSQL + serverless architecture scales effortlessly
+6. **Security** - Clerk handles authentication, Zod validates inputs
+7. **AI-Ready** - Vercel AI SDK integration for modern AI features
+8. **PWA Support** - Offline-first capabilities with Vite PWA
+9. **Clean Architecture** - Enforced separation of concerns, especially for styles
+10. **Quick Start** - Automated environment setup and database initialization
