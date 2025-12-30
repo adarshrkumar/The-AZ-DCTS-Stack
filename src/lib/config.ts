@@ -3,16 +3,21 @@
  * Central configuration for the application that will be rendered on screen
  */
 
-export const siteConfig = {
-  /**
-   * The name of the stack/framework
-   */
-  stackName: 'A-DCTS Stack',
+/**
+ * The core stack identifier - change this in ONE place to update everywhere
+ */
+const STACK_SHORT_NAME = 'A-DCTS';
 
+export const siteConfig = {
   /**
    * Short name for the stack (used in PWA and compact displays)
    */
-  stackShortName: 'A-DCTS',
+  stackShortName: STACK_SHORT_NAME,
+
+  /**
+   * The full name of the stack/framework (derived from stackShortName)
+   */
+  stackName: `${STACK_SHORT_NAME} Stack`,
 
   /**
    * Full description of the stack
