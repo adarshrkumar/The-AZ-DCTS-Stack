@@ -205,7 +205,7 @@ EXA_API_KEY="..."
     if (options.install) {
       logStep(8, 'Vercel CLI setup...');
       const shouldLoginVercel = await promptYesNo(
-        'Login to Vercel now? (You can deploy immediately after setup)',
+        'Login to Vercel now?',
         true
       );
 
