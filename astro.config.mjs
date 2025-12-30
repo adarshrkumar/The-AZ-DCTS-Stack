@@ -21,9 +21,9 @@ export default defineConfig({
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
-          name: 'A-DCTS Stack App',
-          short_name: 'A-DCTS',
-          description: 'Progressive Web App built with the A-DCTS Stack',
+          name: 'ATSDC Stack App',
+          short_name: 'ATSDC',
+          description: 'Progressive Web App built with the ATSDC Stack',
           theme_color: '#ffffff',
           background_color: '#ffffff',
           display: 'standalone',

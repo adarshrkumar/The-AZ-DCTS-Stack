@@ -1,16 +1,16 @@
-# A-DCTS Stack
+# ATSDC Stack
 
 A production-ready, full-stack web application framework combining the best modern technologies for building secure, type-safe, and AI-ready web applications.
 
 ## 🚀 Stack Overview
 
-The **A-DCTS Stack** is a carefully curated combination of modern web technologies:
+The **ATSDC Stack** is a carefully curated combination of modern web technologies:
 
 - **A** - [Astro](https://astro.build) - Lightning-fast static site generation with dynamic capabilities
-- **D** - [Drizzle ORM](https://orm.drizzle.team) - Type-safe database operations with PostgreSQL
-- **C** - [Clerk](https://clerk.com) - Complete authentication and user management
 - **T** - [TypeScript](https://www.typescriptlang.org) - Full type safety across your entire application
 - **S** - [SCSS](https://sass-lang.com) - Powerful styling with variables, mixins, and modules
+- **D** - [Drizzle ORM](https://orm.drizzle.team) - Type-safe database operations with PostgreSQL
+- **C** - [Clerk](https://clerk.com) - Complete authentication and user management
 
 ### Additional Technologies
 
@@ -27,18 +27,18 @@ The **A-DCTS Stack** is a carefully curated combination of modern web technologi
 
 ### Using NPX (Recommended)
 
-Create a new project using the A-DCTS Stack CLI:
+Create a new project using the ATSDC Stack CLI:
 
 ```bash
 # Fully interactive mode - prompts for everything
-npx a-dcts-stack
+npx create-atsdc-stack
 
 # Provide project name, get prompted for install/setup options
-npx a-dcts-stack my-app
+npx create-atsdc-stack my-app
 
 # Skip prompts with explicit flags
-npx a-dcts-stack my-app --install
-npx a-dcts-stack my-app --install --setup-db
+npx create-atsdc-stack my-app --install
+npx create-atsdc-stack my-app --install --setup-db
 ```
 
 The CLI will interactively prompt you for any options you don't provide:
@@ -50,7 +50,7 @@ The CLI will interactively prompt you for any options you don't provide:
 
 ```bash
 # Clone this repository
-git clone https://github.com/yourusername/a-dcts-stack.git my-app
+git clone https://github.com/yourusername/atsdc-stack.git my-app
 cd my-app
 
 # Install dependencies

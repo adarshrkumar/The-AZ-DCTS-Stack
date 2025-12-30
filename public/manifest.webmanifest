@@ -1,7 +1,7 @@
 {
-  "name": "A-DCTS Stack App",
-  "short_name": "A-DCTS",
-  "description": "Progressive Web App built with the A-DCTS Stack",
+  "name": "ATSDC Stack App",
+  "short_name": "ATSDC",
+  "description": "Progressive Web App built with the ATSDC Stack",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

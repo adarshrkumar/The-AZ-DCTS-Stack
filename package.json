@@ -1,10 +1,10 @@
 {
-  "name": "a-dcts-stack",
+  "name": "create-atsdc-stack",
   "version": "1.0.0",
-  "description": "A-DCTS Stack - Astro, Drizzle, Clerk, TypeScript, SCSS CLI utility",
+  "description": "ATSDC Stack - Astro, TypeScript, SCSS, Drizzle, Clerk CLI utility",
   "type": "module",
   "bin": {
-    "a-dcts": "./bin/cli.js"
+    "create-atsdc-stack": "./bin/cli.js"
   },
   "scripts": {
     "dev": "astro dev",

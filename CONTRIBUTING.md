@@ -1,6 +1,6 @@
-# Contributing to A-DCTS Stack
+# Contributing to ATSDC Stack
 
-Thank you for your interest in contributing to the A-DCTS Stack! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the ATSDC Stack! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 
@@ -32,8 +32,8 @@ We welcome feature requests! Please create an issue with:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/yourusername/a-dcts-stack.git
-   cd a-dcts-stack
+   git clone https://github.com/yourusername/atsdc-stack.git
+   cd atsdc-stack
    ```
 
 2. **Create a feature branch**
@@ -327,4 +327,4 @@ Contributors will be recognized in:
 - Release notes
 - Project documentation
 
-Thank you for contributing to A-DCTS Stack!
+Thank you for contributing to ATSDC Stack!
