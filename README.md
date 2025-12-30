@@ -291,6 +291,8 @@ export const POST: APIRoute = async ({ request }) => {
 
 The stack includes Vercel AI SDK with AI Gateway for seamless AI integration - no provider-specific packages needed!
 
+**Note:** AI Gateway requires Vercel AI SDK v4.1.0 or later (already configured in this stack).
+
 ```typescript
 // src/pages/api/chat.ts
 import type { APIRoute } from 'astro';
