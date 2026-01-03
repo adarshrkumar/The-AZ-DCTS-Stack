@@ -21,7 +21,7 @@ const {
 
 const pageArray = Array.isArray(pageTitle) ? pageTitle : [pageTitle];
 
-const newPageTitle = pageArray ? (pageArray?.[0] === '' || pageArray?.[0] === siteConfig.stackName || pageArray?.[0].toLowerCase() === 'index' || pageArray?.[0].toLowerCase() === 'home') ? pageArray.filter((a, i) => i !== 0) : pageArray : null;
+const newPageTitle = pageArray ? (pageArray?.[0] === '' || pageArray?.[0] === siteConfig.stackName || pageArray?.[0]?.toLowerCase() === 'index' || pageArray?.[0]?.toLowerCase() === 'home') ? pageArray.filter((a, i) => i !== 0) : pageArray : null;
 
 const title = newPageTitle ? `${newPageTitle?.join(' | ')} | ${siteConfig.stackName}` : siteConfig.stackName;
 ---
