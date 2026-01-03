@@ -10,7 +10,9 @@ import { basename, dirname, join } from 'node:path';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
-import * as readline from 'node:readline/promises';
+import promptSyncModule from 'prompt-sync';
+
+const prompt = promptSyncModule();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,23 +48,14 @@ function logWarning(message) {
     console.warn(`${colors.yellow}⚠${colors.reset} ${message}`);
 }
 
-async function promptUser(question) {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    try {
-        const answer = await rl.question(`${colors.cyan}${question}${colors.reset} `);
-        return answer.trim();
-    } finally {
-        rl.close();
-    }
+function promptUser(question) {
+    const answer = prompt(`${colors.cyan}${question}${colors.reset} `);
+    return answer ? answer.trim() : '';
 }
 
-async function promptYesNo(question, defaultValue = false) {
+function promptYesNo(question, defaultValue = false) {
     const defaultText = defaultValue ? 'Y/n' : 'y/N';
-    const answer = await promptUser(`${question} (${defaultText}):`);
+    const answer = promptUser(`${question} (${defaultText}):`);
 
     if (!answer) {
         return defaultValue;
@@ -87,7 +80,7 @@ function createAdapter(name, value = null, pkg = undefined) {
     return { name, value: adapterValue, pkg: adapterPkg };
 }
 
-async function promptAdapter() {
+function promptAdapter() {
     const adapters = {
         '1': createAdapter('Vercel'),
         '2': createAdapter('Netlify'),
@@ -103,7 +96,7 @@ async function promptAdapter() {
     console.log(`  4. Node`);
     console.log(`  5. Static (no adapter)`);
 
-    const answer = await promptUser('Enter your choice (1-5):');
+    const answer = promptUser('Enter your choice (1-5):');
     const choice = answer || '1'; // Default to Vercel
 
     const selected = adapters[choice];
@@ -115,7 +108,7 @@ async function promptAdapter() {
     return selected;
 }
 
-async function promptIntegrations() {
+function promptIntegrations() {
     const integrations = {
         react: { name: 'React', pkg: '@astrojs/react', deps: ['react', 'react-dom', '@types/react', '@types/react-dom'] },
         vue: { name: 'Vue', pkg: '@astrojs/vue', deps: ['vue'] },
@@ -130,7 +123,7 @@ async function promptIntegrations() {
     console.log(`  4. Solid`);
     console.log(`  ${colors.yellow}0${colors.reset}. None (no other UI framework)`);
 
-    const answer = await promptUser('Enter numbers separated by spaces (e.g., "1 2" for React and Vue):');
+    const answer = promptUser('Enter numbers separated by spaces (e.g., "1 2" for React and Vue):');
     const choices = answer ? answer.split(/\s+/).filter(Boolean) : ['1']; // Default to React
 
     const selected = [];
@@ -797,7 +790,7 @@ async function createProject(projectName, options = {}) {
 
         // Step 8: Vercel CLI login (if dependencies were installed) - at the very end
         if (options.install) {
-            const shouldLoginVercel = await promptYesNo(
+            const shouldLoginVercel = promptYesNo(
                 '\nLogin to Vercel now?',
                 true
             );
@@ -1081,7 +1074,7 @@ if (needsInteractive && !projectName) {
 
 // Prompt for project name if not provided
 if (!projectName) {
-    projectName = await promptUser('What would you like to name your project? (Press Enter to use current directory)');
+    projectName = promptUser('What would you like to name your project? (Press Enter to use current directory)');
 
     // If empty, use current directory
     if (!projectName) {
@@ -1100,14 +1093,14 @@ if (!projectName) {
 // Prompt for install flag if not provided
 let shouldInstall = installFlagPassed;
 if (!installFlagPassed) {
-    shouldInstall = await promptYesNo('Install dependencies now?', true);
+    shouldInstall = promptYesNo('Install dependencies now?', true);
     console.log();
 }
 
 // Prompt for setup-db flag if not provided (only if installing)
 let shouldSetupDb = setupDbFlagPassed;
 if (shouldInstall && !setupDbFlagPassed) {
-    shouldSetupDb = await promptYesNo('Set up the database now?', false);
+    shouldSetupDb = promptYesNo('Set up the database now?', false);
     console.log();
 }
 
@@ -1131,12 +1124,12 @@ if (adapterFlagPassed && adapterValue) {
         selectedAdapter = createAdapter('Vercel');
     }
 } else {
-    selectedAdapter = await promptAdapter();
+    selectedAdapter = promptAdapter();
     console.log();
 }
 
 // Prompt for integrations
-const selectedIntegrations = await promptIntegrations();
+const selectedIntegrations = promptIntegrations();
 if (selectedIntegrations.length > 0) {
     const integrationNames = selectedIntegrations.map(int => int.name).join(', ');
     logSuccess(`Selected integrations: ${integrationNames}`);
