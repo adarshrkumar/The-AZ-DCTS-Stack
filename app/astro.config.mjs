@@ -7,7 +7,14 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
-    adapter: vercel(),
+    adapter: vercel({
+        imageService: true,
+    }),
+    image: {
+        service: {
+            entrypoint: 'astro/assets/services/noop',
+        },
+    },
     integrations: [
         react(),
         clerk({
