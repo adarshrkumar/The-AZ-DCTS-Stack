@@ -202,6 +202,7 @@ vercel
 ```
 
 Make sure to set these environment variables in your Vercel project settings:
+
 - `DATABASE_URL`
 - `PUBLIC_CLERK_PUBLISHABLE_KEY`
 - `CLERK_SECRET_KEY`
