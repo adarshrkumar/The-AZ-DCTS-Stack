@@ -8,22 +8,22 @@ import TurndownService from 'turndown';
 
 // Configure marked for markdown to HTML conversion
 marked.setOptions({
-  gfm: true, // GitHub Flavored Markdown
-  breaks: true, // Convert \n to <br>
-  headerIds: true, // Add IDs to headings
-  mangle: false, // Don't escape email addresses
+    gfm: true, // GitHub Flavored Markdown
+    breaks: true, // Convert \n to <br>
+    headerIds: true, // Add IDs to headings
+    mangle: false, // Don't escape email addresses
 });
 
 // Configure turndown for HTML to markdown conversion
 const turndownService = new TurndownService({
-  headingStyle: 'atx', // Use # for headings
-  hr: '---', // Use --- for horizontal rules
-  bulletListMarker: '-', // Use - for bullet lists
-  codeBlockStyle: 'fenced', // Use ``` for code blocks
-  fence: '```', // Code fence marker
-  emDelimiter: '*', // Use * for emphasis
-  strongDelimiter: '**', // Use ** for strong
-  linkStyle: 'inlined', // Use [text](url) for links
+    headingStyle: 'atx', // Use # for headings
+    hr: '---', // Use --- for horizontal rules
+    bulletListMarker: '-', // Use - for bullet lists
+    codeBlockStyle: 'fenced', // Use ``` for code blocks
+    fence: '```', // Code fence marker
+    emDelimiter: '*', // Use * for emphasis
+    strongDelimiter: '**', // Use ** for strong
+    linkStyle: 'inlined', // Use [text](url) for links
 });
 
 /**
@@ -32,13 +32,13 @@ const turndownService = new TurndownService({
  * @returns HTML string
  */
 export async function markdownToHtml(markdown: string): Promise<string> {
-  try {
-    const html = await marked.parse(markdown);
-    return html;
-  } catch (error) {
-    console.error('Error converting markdown to HTML:', error);
-    throw new Error('Failed to convert markdown to HTML');
-  }
+    try {
+        const html = await marked.parse(markdown);
+        return html;
+    } catch (error) {
+        console.error('Error converting markdown to HTML:', error);
+        throw new Error('Failed to convert markdown to HTML');
+    }
 }
 
 /**
@@ -47,13 +47,13 @@ export async function markdownToHtml(markdown: string): Promise<string> {
  * @returns HTML string
  */
 export function markdownToHtmlSync(markdown: string): string {
-  try {
-    const html = marked.parse(markdown) as string;
-    return html;
-  } catch (error) {
-    console.error('Error converting markdown to HTML:', error);
-    throw new Error('Failed to convert markdown to HTML');
-  }
+    try {
+        const html = marked.parse(markdown) as string;
+        return html;
+    } catch (error) {
+        console.error('Error converting markdown to HTML:', error);
+        throw new Error('Failed to convert markdown to HTML');
+    }
 }
 
 /**
@@ -62,13 +62,13 @@ export function markdownToHtmlSync(markdown: string): string {
  * @returns Markdown string
  */
 export function htmlToMarkdown(html: string): string {
-  try {
-    const markdown = turndownService.turndown(html);
-    return markdown;
-  } catch (error) {
-    console.error('Error converting HTML to markdown:', error);
-    throw new Error('Failed to convert HTML to markdown');
-  }
+    try {
+        const markdown = turndownService.turndown(html);
+        return markdown;
+    } catch (error) {
+        console.error('Error converting HTML to markdown:', error);
+        throw new Error('Failed to convert HTML to markdown');
+    }
 }
 
 /**
@@ -78,19 +78,19 @@ export function htmlToMarkdown(html: string): string {
  * @returns Sanitized HTML string
  */
 export async function sanitizeMarkdown(markdown: string): Promise<string> {
-  try {
-    // Basic sanitization - remove script tags and dangerous attributes
-    const sanitized = markdown
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/on\w+="[^"]*"/g, '')
-      .replace(/on\w+='[^']*'/g, '');
+    try {
+        // Basic sanitization - remove script tags and dangerous attributes
+        const sanitized = markdown
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/on\w+="[^"]*"/g, '')
+            .replace(/on\w+='[^']*'/g, '');
 
-    const html = await marked.parse(sanitized);
-    return html;
-  } catch (error) {
-    console.error('Error sanitizing markdown:', error);
-    throw new Error('Failed to sanitize markdown');
-  }
+        const html = await marked.parse(sanitized);
+        return html;
+    } catch (error) {
+        console.error('Error sanitizing markdown:', error);
+        throw new Error('Failed to sanitize markdown');
+    }
 }
 
 /**
@@ -99,21 +99,21 @@ export async function sanitizeMarkdown(markdown: string): Promise<string> {
  * @returns Plain text string
  */
 export function markdownToPlainText(markdown: string): string {
-  try {
-    const html = marked.parse(markdown) as string;
-    const text = html
-      .replace(/<[^>]*>/g, '') // Remove HTML tags
-      .replace(/&nbsp;/g, ' ') // Replace &nbsp;
-      .replace(/&amp;/g, '&') // Replace &amp;
-      .replace(/&lt;/g, '<') // Replace &lt;
-      .replace(/&gt;/g, '>') // Replace &gt;
-      .replace(/&quot;/g, '"') // Replace &quot;
-      .trim();
-    return text;
-  } catch (error) {
-    console.error('Error extracting plain text:', error);
-    throw new Error('Failed to extract plain text');
-  }
+    try {
+        const html = marked.parse(markdown) as string;
+        const text = html
+            .replace(/<[^>]*>/g, '') // Remove HTML tags
+            .replace(/&nbsp;/g, ' ') // Replace &nbsp;
+            .replace(/&amp;/g, '&') // Replace &amp;
+            .replace(/&lt;/g, '<') // Replace &lt;
+            .replace(/&gt;/g, '>') // Replace &gt;
+            .replace(/&quot;/g, '"') // Replace &quot;
+            .trim();
+        return text;
+    } catch (error) {
+        console.error('Error extracting plain text:', error);
+        throw new Error('Failed to extract plain text');
+    }
 }
 
 /**
@@ -123,19 +123,19 @@ export function markdownToPlainText(markdown: string): string {
  * @returns Excerpt string
  */
 export function generateExcerpt(markdown: string, maxLength: number = 200): string {
-  const plainText = markdownToPlainText(markdown);
+    const plainText = markdownToPlainText(markdown);
 
-  if (plainText.length <= maxLength) {
-    return plainText;
-  }
+    if (plainText.length <= maxLength) {
+        return plainText;
+    }
 
-  // Truncate at word boundary
-  const truncated = plainText.slice(0, maxLength);
-  const lastSpace = truncated.lastIndexOf(' ');
+    // Truncate at word boundary
+    const truncated = plainText.slice(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
 
-  if (lastSpace > 0) {
-    return truncated.slice(0, lastSpace) + '...';
-  }
+    if (lastSpace > 0) {
+        return truncated.slice(0, lastSpace) + '...';
+    }
 
-  return truncated + '...';
+    return truncated + '...';
 }

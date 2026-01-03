@@ -11,18 +11,18 @@ import * as cheerio from 'cheerio';
  * @returns Metadata object
  */
 export function extractMetadata(html: string) {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  return {
-    title: $('title').text() || $('h1').first().text() || '',
-    description: $('meta[name="description"]').attr('content') || '',
-    keywords: $('meta[name="keywords"]').attr('content') || '',
-    ogTitle: $('meta[property="og:title"]').attr('content') || '',
-    ogDescription: $('meta[property="og:description"]').attr('content') || '',
-    ogImage: $('meta[property="og:image"]').attr('content') || '',
-    twitterCard: $('meta[name="twitter:card"]').attr('content') || '',
-    canonical: $('link[rel="canonical"]').attr('href') || '',
-  };
+    return {
+        title: $('title').text() || $('h1').first().text() || '',
+        description: $('meta[name="description"]').attr('content') || '',
+        keywords: $('meta[name="keywords"]').attr('content') || '',
+        ogTitle: $('meta[property="og:title"]').attr('content') || '',
+        ogDescription: $('meta[property="og:description"]').attr('content') || '',
+        ogImage: $('meta[property="og:image"]').attr('content') || '',
+        twitterCard: $('meta[name="twitter:card"]').attr('content') || '',
+        canonical: $('link[rel="canonical"]').attr('href') || '',
+    };
 }
 
 /**
@@ -31,22 +31,22 @@ export function extractMetadata(html: string) {
  * @returns Array of link objects
  */
 export function extractLinks(html: string) {
-  const $ = cheerio.load(html);
-  const links: Array<{ text: string; href: string; title?: string }> = [];
+    const $ = cheerio.load(html);
+    const links: Array<{ text: string; href: string; title?: string }> = [];
 
-  $('a').each((_, element) => {
-    const $el = $(element);
-    const href = $el.attr('href');
-    if (href) {
-      links.push({
-        text: $el.text().trim(),
-        href,
-        title: $el.attr('title'),
-      });
-    }
-  });
+    $('a').each((_, element) => {
+        const $el = $(element);
+        const href = $el.attr('href');
+        if (href) {
+            links.push({
+                text: $el.text().trim(),
+                href,
+                title: $el.attr('title'),
+            });
+        }
+    });
 
-  return links;
+    return links;
 }
 
 /**
@@ -55,22 +55,22 @@ export function extractLinks(html: string) {
  * @returns Array of image objects
  */
 export function extractImages(html: string) {
-  const $ = cheerio.load(html);
-  const images: Array<{ src: string; alt?: string; title?: string }> = [];
+    const $ = cheerio.load(html);
+    const images: Array<{ src: string; alt?: string; title?: string }> = [];
 
-  $('img').each((_, element) => {
-    const $el = $(element);
-    const src = $el.attr('src');
-    if (src) {
-      images.push({
-        src,
-        alt: $el.attr('alt'),
-        title: $el.attr('title'),
-      });
-    }
-  });
+    $('img').each((_, element) => {
+        const $el = $(element);
+        const src = $el.attr('src');
+        if (src) {
+            images.push({
+                src,
+                alt: $el.attr('alt'),
+                title: $el.attr('title'),
+            });
+        }
+    });
 
-  return images;
+    return images;
 }
 
 /**
@@ -79,22 +79,22 @@ export function extractImages(html: string) {
  * @returns Array of heading objects
  */
 export function extractHeadings(html: string) {
-  const $ = cheerio.load(html);
-  const headings: Array<{ level: number; text: string; id?: string }> = [];
+    const $ = cheerio.load(html);
+    const headings: Array<{ level: number; text: string; id?: string }> = [];
 
-  $('h1, h2, h3, h4, h5, h6').each((_, element) => {
-    const $el = $(element);
-    const tagName = $el.prop('tagName')?.toLowerCase();
-    const level = parseInt(tagName?.replace('h', '') || '1');
+    $('h1, h2, h3, h4, h5, h6').each((_, element) => {
+        const $el = $(element);
+        const tagName = $el.prop('tagName')?.toLowerCase();
+        const level = parseInt(tagName?.replace('h', '') || '1');
 
-    headings.push({
-      level,
-      text: $el.text().trim(),
-      id: $el.attr('id'),
+        headings.push({
+            level,
+            text: $el.text().trim(),
+            id: $el.attr('id'),
+        });
     });
-  });
 
-  return headings;
+    return headings;
 }
 
 /**
@@ -104,13 +104,13 @@ export function extractHeadings(html: string) {
  * @returns Array of TOC items
  */
 export function generateTableOfContents(html: string, maxLevel: number = 3) {
-  const headings = extractHeadings(html);
-  return headings
-    .filter((h) => h.level <= maxLevel)
-    .map((h) => ({
-      ...h,
-      slug: h.id || h.text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
-    }));
+    const headings = extractHeadings(html);
+    return headings
+        .filter((h) => h.level <= maxLevel)
+        .map((h) => ({
+            ...h,
+            slug: h.id || h.text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+        }));
 }
 
 /**
@@ -120,26 +120,26 @@ export function generateTableOfContents(html: string, maxLevel: number = 3) {
  * @returns Cleaned HTML string
  */
 export function cleanHtml(html: string): string {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  // Remove dangerous elements
-  $('script, style, iframe, object, embed').remove();
+    // Remove dangerous elements
+    $('script, style, iframe, object, embed').remove();
 
-  // Remove event handlers
-  $('*').each((_, element) => {
-    const $el = $(element);
-    const attrs = $el.attr();
+    // Remove event handlers
+    $('*').each((_, element) => {
+        const $el = $(element);
+        const attrs = $el.attr();
 
-    if (attrs) {
-      Object.keys(attrs).forEach((attr) => {
-        if (attr.startsWith('on')) {
-          $el.removeAttr(attr);
+        if (attrs) {
+            Object.keys(attrs).forEach((attr) => {
+                if (attr.startsWith('on')) {
+                    $el.removeAttr(attr);
+                }
+            });
         }
-      });
-    }
-  });
+    });
 
-  return $.html();
+    return $.html();
 }
 
 /**
@@ -148,12 +148,12 @@ export function cleanHtml(html: string): string {
  * @returns Plain text string
  */
 export function extractTextContent(html: string): string {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  // Remove script and style elements
-  $('script, style').remove();
+    // Remove script and style elements
+    $('script, style').remove();
 
-  return $('body').text().replace(/\s+/g, ' ').trim();
+    return $('body').text().replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -162,19 +162,19 @@ export function extractTextContent(html: string): string {
  * @returns HTML with IDs added to headings
  */
 export function addHeadingIds(html: string): string {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  $('h1, h2, h3, h4, h5, h6').each((_, element) => {
-    const $el = $(element);
+    $('h1, h2, h3, h4, h5, h6').each((_, element) => {
+        const $el = $(element);
 
-    if (!$el.attr('id')) {
-      const text = $el.text().trim();
-      const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-      $el.attr('id', id);
-    }
-  });
+        if (!$el.attr('id')) {
+            const text = $el.text().trim();
+            const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            $el.attr('id', id);
+        }
+    });
 
-  return $.html();
+    return $.html();
 }
 
 /**
@@ -184,21 +184,21 @@ export function addHeadingIds(html: string): string {
  * @returns HTML with external links updated
  */
 export function addExternalLinkTargets(html: string, domain?: string): string {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  $('a').each((_, element) => {
-    const $el = $(element);
-    const href = $el.attr('href');
+    $('a').each((_, element) => {
+        const $el = $(element);
+        const href = $el.attr('href');
 
-    if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
-      if (!domain || !href.includes(domain)) {
-        $el.attr('target', '_blank');
-        $el.attr('rel', 'noopener noreferrer');
-      }
-    }
-  });
+        if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+            if (!domain || !href.includes(domain)) {
+                $el.attr('target', '_blank');
+                $el.attr('rel', 'noopener noreferrer');
+            }
+        }
+    });
 
-  return $.html();
+    return $.html();
 }
 
 /**
@@ -208,9 +208,9 @@ export function addExternalLinkTargets(html: string, domain?: string): string {
  * @returns Reading time in minutes
  */
 export function calculateReadingTime(html: string, wordsPerMinute: number = 200): number {
-  const text = extractTextContent(html);
-  const wordCount = text.split(/\s+/).length;
-  return Math.ceil(wordCount / wordsPerMinute);
+    const text = extractTextContent(html);
+    const wordCount = text.split(/\s+/).length;
+    return Math.ceil(wordCount / wordsPerMinute);
 }
 
 /**
@@ -219,12 +219,12 @@ export function calculateReadingTime(html: string, wordsPerMinute: number = 200)
  * @returns HTML with tables wrapped
  */
 export function wrapTables(html: string): string {
-  const $ = cheerio.load(html);
+    const $ = cheerio.load(html);
 
-  $('table').each((_, element) => {
-    const $el = $(element);
-    $el.wrap('<div class="table-wrapper" style="overflow-x: auto;"></div>');
-  });
+    $('table').each((_, element) => {
+        const $el = $(element);
+        $el.wrap('<div class="table-wrapper" style="overflow-x: auto;"></div>');
+    });
 
-  return $.html();
+    return $.html();
 }

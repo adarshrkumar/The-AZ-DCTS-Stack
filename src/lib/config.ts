@@ -9,24 +9,24 @@
 const STACK_SHORT_NAME = 'ATSDC';
 
 export const siteConfig = {
-  /**
+    /**
    * Short name for the stack (used in PWA and compact displays)
    */
-  stackShortName: STACK_SHORT_NAME,
+    stackShortName: STACK_SHORT_NAME,
 
-  /**
+    /**
    * The full name of the stack/framework (derived from stackShortName)
    */
-  stackName: `${STACK_SHORT_NAME} Stack`,
+    stackName: `${STACK_SHORT_NAME} Stack`,
 
-  /**
+    /**
    * Full description of the stack
    */
-  stackDescription:
-    'Full-stack application built with Astro, TypeScript, Drizzle, Clerk, and SCSS',
+    stackDescription:
+        'Full-stack application built with Astro, TypeScript, Drizzle, Clerk, and SCSS',
 
-  /**
+    /**
    * GitHub repository URL
    */
-  githubUrl: 'https://github.com/yourusername/atsdc-stack',
+    githubUrl: 'https://github.com/yourusername/atsdc-stack',
 } as const;
