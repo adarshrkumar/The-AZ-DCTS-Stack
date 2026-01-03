@@ -171,7 +171,7 @@ import '@/styles/components/button.scss';
 import '@/styles/pages/example.scss';
 ---
 
-<Layout title="Example Page">
+<Layout pageTitle="Example Page">
   <div class="example-page">
     <h1>Hello World</h1>
     <!-- Preferred: Data attributes for modifiers -->
