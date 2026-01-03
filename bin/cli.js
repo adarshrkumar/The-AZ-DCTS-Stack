@@ -837,7 +837,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`
 ${colors.bright}${colors.cyan}╔════════════════════════════════════════════════════════════════════╗
 ║                       ATSDC Stack CLI v1.0                         ║
-║          Production-Ready Full-Stack Application Generator        ║
+║          Production-Ready Full-Stack Application Generator         ║
 ╚════════════════════════════════════════════════════════════════════╝${colors.reset}
 
 ${colors.bright}${colors.green}USAGE${colors.reset}
