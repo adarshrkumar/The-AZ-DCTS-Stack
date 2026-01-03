@@ -10,14 +10,21 @@
 import { siteConfig } from '@/lib/config';
 
 interface Props {
-    pageTitle?: string;
+    pageTitle?: string | string[];
     description?: string;
 }
 
-const {
+let {
     pageTitle,
+} = Astro.props;
+
+const {
     description = siteConfig.stackDescription,
 } = Astro.props;
+
+if (pageTitle && Array.isArray(pageTitle) && pageTitle.length > 0) {
+    pageTitle = pageTitle.join(' | ');
+}
 
 const usePageTitle = pageTitle && pageTitle !== '' && pageTitle !== siteConfig.stackName && pageTitle.toLowerCase() !== 'index' && pageTitle.toLowerCase() !== 'home';
 
