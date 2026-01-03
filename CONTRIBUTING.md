@@ -31,12 +31,14 @@ We welcome feature requests! Please create an issue with:
 ### Pull Requests
 
 1. **Fork the repository**
+
    ```bash
    git clone https://github.com/yourusername/atsdc-stack.git
    cd atsdc-stack
    ```
 
 2. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -48,18 +50,21 @@ We welcome feature requests! Please create an issue with:
    - Update documentation as needed
 
 4. **Test your changes**
+
    ```bash
    npm run build
    npm run preview
    ```
 
 5. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "feat: add amazing new feature"
    ```
 
 6. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -106,13 +111,17 @@ type User = {
 import '@/styles/components/button.scss';
 ---
 <button class="btn" data-variant="primary" data-size="lg">Click Me</button>
+```
 
+```astro
 <!-- GOOD: External styles with class chaining (alternative) -->
 ---
 import '@/styles/components/button.scss';
 ---
 <button class="btn primary lg">Click Me</button>
+```
 
+```astro
 <!-- BAD: Inline styles (avoid this) -->
 <button class="btn">Click Me</button>
 <style>
@@ -228,7 +237,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-```
+```text
 type(scope): subject
 
 body
@@ -237,6 +246,7 @@ footer
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -246,7 +256,8 @@ footer
 - `chore`: Maintenance tasks
 
 **Examples:**
-```
+
+```text
 feat(auth): add OAuth integration with Google
 fix(db): resolve connection pool timeout issue
 docs(readme): update installation instructions
@@ -270,7 +281,7 @@ refactor(api): simplify error handling
 
 ## Project Structure Conventions
 
-```
+```text
 src/
 ├── components/        # Reusable Astro components
 │   └── ComponentName.astro
@@ -323,6 +334,7 @@ If you have questions:
 ## Recognition
 
 Contributors will be recognized in:
+
 - README.md contributors section
 - Release notes
 - Project documentation
