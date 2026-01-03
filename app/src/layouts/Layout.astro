@@ -21,9 +21,20 @@ const {
 
 const pageArray = Array.isArray(pageTitle) ? pageTitle : [pageTitle];
 
-const newPageTitle = (pageArray && pageArray.length > 0 && pageArray[0]) ? (pageArray?.[0] === '' || pageArray?.[0] === siteConfig.stackName || pageArray?.[0]?.toLowerCase() === 'index' || pageArray?.[0]?.toLowerCase() === 'home') ? pageArray.filter((a, i) => i !== 0) : pageArray : null;
+const firstElement = pageArray?.[0];
+const shouldSkipFirst =
+    firstElement === '' ||
+    firstElement === siteConfig.stackName ||
+    firstElement?.toLowerCase() === 'index' ||
+    firstElement?.toLowerCase() === 'home';
 
-const title = newPageTitle ? `${newPageTitle?.join(' | ')} | ${siteConfig.stackName}` : siteConfig.stackName;
+const newPageTitle = (pageArray && pageArray.length > 0 && firstElement)
+    ? shouldSkipFirst
+        ? pageArray.filter((a, i) => i !== 0)
+        : pageArray
+    : null;
+
+const title = newPageTitle ? `${newPageTitle.join(' | ')} | ${siteConfig.stackName}` : siteConfig.stackName;
 ---
 
 <!doctype html>
