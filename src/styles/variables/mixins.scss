@@ -232,5 +232,7 @@
 // Smooth scrolling
 @mixin smooth-scroll {
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  @supports(-webkit-overflow-scrolling: touch) {
+    -webkit-overflow-scrolling: touch;
+  }
 }
