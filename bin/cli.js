@@ -6,7 +6,7 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
@@ -592,23 +592,34 @@ async function setupDatabase(projectDir) {
 }
 
 async function createProject(projectName, options = {}) {
-    const targetDir = join(process.cwd(), projectName);
+    // If no project name provided, use current directory
+    const isCurrentDir = !projectName || projectName === '.';
+    const targetDir = isCurrentDir ? process.cwd() : join(process.cwd(), projectName);
+    const displayName = isCurrentDir ? 'current directory' : projectName;
 
     try {
-        // Step 1: Check if directory exists
-        logStep(1, 'Checking project directory...');
-        if (existsSync(targetDir)) {
-            logError(`Directory "${projectName}" already exists!`);
-            process.exit(1);
+        // Step 1: Check if directory exists (skip for current directory)
+        if (!isCurrentDir) {
+            logStep(1, 'Checking project directory...');
+            if (existsSync(targetDir)) {
+                logError(`Directory "${projectName}" already exists!`);
+                process.exit(1);
+            }
+            logSuccess('Directory available');
         }
 
-        // Step 2: Create project directory
-        logStep(2, `Creating project directory: ${projectName}`);
-        await mkdir(targetDir, { recursive: true });
-        logSuccess('Directory created');
+        // Step 2: Create project directory (skip for current directory)
+        if (!isCurrentDir) {
+            logStep(isCurrentDir ? 1 : 2, `Creating project directory: ${projectName}`);
+            await mkdir(targetDir, { recursive: true });
+            logSuccess('Directory created');
+        } else {
+            logStep(1, 'Using current directory for project setup');
+        }
 
         // Step 3: Copy template files
-        logStep(3, 'Copying template files...');
+        const stepOffset = isCurrentDir ? 1 : 2;
+        logStep(stepOffset + 1, 'Copying template files...');
 
         const appDir = join(templateDir, 'app');
 
@@ -651,10 +662,12 @@ async function createProject(projectName, options = {}) {
         logSuccess('Template files copied');
 
         // Step 4: Update package.json with project name, adapter, and integrations
-        logStep(4, 'Updating package.json...');
+        logStep(stepOffset + 2, 'Updating package.json...');
         const packageJsonPath = join(targetDir, 'package.json');
         const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
-        packageJson.name = projectName;
+        // Use current directory name if no project name provided
+        const finalProjectName = isCurrentDir ? basename(targetDir) : projectName;
+        packageJson.name = finalProjectName;
 
         // Initialize dependencies if not present
         if (!packageJson.dependencies) {
@@ -716,7 +729,7 @@ async function createProject(projectName, options = {}) {
         logSuccess('package.json updated');
 
         // Step 5: Create .env from .env.example
-        logStep(5, 'Creating environment file...');
+        logStep(stepOffset + 3, 'Creating environment file...');
         const envExamplePath = join(targetDir, '.env.example');
         const envPath = join(targetDir, '.env');
         if (existsSync(envExamplePath)) {
@@ -728,7 +741,7 @@ async function createProject(projectName, options = {}) {
 
         // Step 6: Install dependencies if requested
         if (options.install) {
-            logStep(6, 'Installing dependencies...');
+            logStep(stepOffset + 4, 'Installing dependencies...');
             try {
                 execSync('npm install', {
                     cwd: targetDir,
@@ -752,7 +765,9 @@ async function createProject(projectName, options = {}) {
 
         console.log('\nNext steps:');
         let step = 1;
-        console.log(`  ${step++}. ${colors.cyan}cd ${projectName}${colors.reset}`);
+        if (!isCurrentDir) {
+            console.log(`  ${step++}. ${colors.cyan}cd ${projectName}${colors.reset}`);
+        }
 
         if (!options.install) {
             console.log(`  ${step++}. ${colors.cyan}npm install${colors.reset}`);
@@ -856,10 +871,11 @@ ${colors.bright}${colors.green}DESCRIPTION${colors.reset}
 ${colors.bright}${colors.green}ARGUMENTS${colors.reset}
     ${colors.cyan}project-name${colors.reset}
             The name of your new project directory. If omitted, you will be
-            prompted to enter it interactively.
+            prompted to enter it interactively. Press Enter without typing
+            a name (or use ".") to scaffold in the current directory.
 
             ${colors.yellow}Validation:${colors.reset} Only letters, numbers, hyphens, and underscores
-            ${colors.yellow}Example:${colors.reset} my-app, my_blog, myapp123
+            ${colors.yellow}Example:${colors.reset} my-app, my_blog, myapp123, . (current directory)
 
 ${colors.bright}${colors.green}OPTIONS${colors.reset}
     ${colors.cyan}--install, -i${colors.reset}
@@ -910,6 +926,9 @@ ${colors.bright}${colors.green}OPTIONS${colors.reset}
 ${colors.bright}${colors.green}EXAMPLES${colors.reset}
     ${colors.yellow}# Fully interactive - prompts for everything${colors.reset}
     npx create-atsdc-stack
+
+    ${colors.yellow}# Scaffold in current directory${colors.reset}
+    npx create-atsdc-stack .
 
     ${colors.yellow}# Provide name, get prompted for install/setup options${colors.reset}
     npx create-atsdc-stack my-awesome-app
@@ -1062,17 +1081,18 @@ if (needsInteractive && !projectName) {
 
 // Prompt for project name if not provided
 if (!projectName) {
-    projectName = await promptUser('What would you like to name your project?');
+    projectName = await promptUser('What would you like to name your project? (Press Enter to use current directory)');
 
+    // If empty, use current directory
     if (!projectName) {
-        logError('Project name is required');
-        process.exit(1);
-    }
-
-    // Validate project name (basic validation)
-    if (!/^[a-z0-9-_]+$/i.test(projectName)) {
-        logError('Project name can only contain letters, numbers, hyphens, and underscores');
-        process.exit(1);
+        projectName = '.';
+        logSuccess('Using current directory for project setup');
+    } else {
+        // Validate project name (basic validation) - only if not using current dir
+        if (projectName !== '.' && !/^[a-z0-9-_]+$/i.test(projectName)) {
+            logError('Project name can only contain letters, numbers, hyphens, and underscores');
+            process.exit(1);
+        }
     }
     console.log();
 }
