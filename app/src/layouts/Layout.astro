@@ -19,7 +19,9 @@ const {
     description = siteConfig.stackDescription,
 } = Astro.props;
 
-const title = pageTitle ? `${siteConfig.stackName} | ${pageTitle}` : siteConfig.stackName;
+const usePageTitle = pageTitle && pageTitle !== '' && pageTitle !== siteConfig.stackName && pageTitle.toLowerCase() !== 'index' && pageTitle.toLowerCase() !== 'home';
+
+const title = usePageTitle ? `${pageTitle} | ${siteConfig.stackName}` : siteConfig.stackName;
 ---
 
 <!doctype html>
