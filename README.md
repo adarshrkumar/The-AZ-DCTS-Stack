@@ -43,6 +43,7 @@ npx create-atsdc-stack my-app --install --setup-db
 ```
 
 The CLI will interactively prompt you for any options you don't provide:
+
 - **Project name** - if not provided as argument
 - **Install dependencies** - if `--install` flag not provided
 - **Setup database** - if `--setup-db` flag not provided (only when installing)
@@ -108,7 +109,7 @@ Your application will be available at `http://localhost:4321`
 
 ## 📁 Project Structure
 
-```
+```text
 ├── bin/
 │   └── cli.js              # CLI entry point
 ├── public/                 # Static assets
@@ -177,7 +178,8 @@ import '@/styles/pages/example.scss';
 
 ### Styling Approach
 
-**Preferred: Data Attributes**
+#### Preferred: Data Attributes
+
 ```scss
 .btn {
   @include button-base;
@@ -188,7 +190,8 @@ import '@/styles/pages/example.scss';
 }
 ```
 
-**Alternative: Class Chaining**
+#### Alternative: Class Chaining
+
 ```scss
 .btn {
   @include button-base;
@@ -313,7 +316,8 @@ export const POST: APIRoute = async ({ request }) => {
 ```
 
 **Supported model formats:**
-- OpenAI: `openai/gpt-4o`, `openai/gpt-4-turbo`
+
+- OpenAI: `openai/gpt-4.1`, `openai/o4-mini`
 - Anthropic: `anthropic/claude-3-5-sonnet-20241022`
 - Google: `google/gemini-1.5-pro`
 - And many more providers without extra dependencies!
@@ -346,6 +350,7 @@ npx vercel --prod
 ### Environment Variables on Vercel
 
 Set these in your Vercel project settings:
+
 - `DATABASE_URL`
 - `CLERK_SECRET_KEY`
 - `OPENAI_API_KEY`
