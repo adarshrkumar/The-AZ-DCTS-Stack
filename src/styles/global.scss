@@ -8,86 +8,86 @@
 
 // Global styles
 :root {
-  // CSS custom properties for runtime theming
-  --color-primary: #{$primary-color};
-  --color-primary-hover: #{$primary-hover};
-  --color-secondary: #{$secondary-color};
-  --color-accent: #{$accent-color};
-  --color-text-primary: #{$text-primary};
-  --color-text-secondary: #{$text-secondary};
-  --color-bg-primary: #{$bg-primary};
-  --color-bg-secondary: #{$bg-secondary};
+    // CSS custom properties for runtime theming
+    --color-primary: #{$primary-color};
+    --color-primary-hover: #{$primary-hover};
+    --color-secondary: #{$secondary-color};
+    --color-accent: #{$accent-color};
+    --color-text-primary: #{$text-primary};
+    --color-text-secondary: #{$text-secondary};
+    --color-bg-primary: #{$bg-primary};
+    --color-bg-secondary: #{$bg-secondary};
 }
 
 html {
-  font-family: $font-family-base;
-  font-size: 16px;
-  color: $text-primary;
-  background-color: $bg-primary;
-  @include smooth-scroll;
+    font-family: $font-family-base;
+    font-size: 16px;
+    color: $text-primary;
+    background-color: $bg-primary;
+    @include smooth-scroll;
 }
 
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 // Typography
 h1 {
-  @include heading-1;
-  margin-bottom: $spacing-large;
+    @include heading-1;
+    margin-bottom: $spacing-large;
 }
 
 h2 {
-  @include heading-2;
-  margin-bottom: $spacing-medium;
+    @include heading-2;
+    margin-bottom: $spacing-medium;
 }
 
 h3 {
-  @include heading-3;
-  margin-bottom: $spacing-medium;
+    @include heading-3;
+    margin-bottom: $spacing-medium;
 }
 
 p {
-  margin-bottom: $spacing-medium;
-  line-height: $line-height-relaxed;
-  color: $text-secondary;
+    margin-bottom: $spacing-medium;
+    line-height: $line-height-relaxed;
+    color: $text-secondary;
 }
 
 // Links
 a {
-  color: $primary-color;
-  transition: color $transition-fast;
+    color: $primary-color;
+    transition: color $transition-fast;
 
-  &:hover {
-    color: $primary-hover;
-  }
+    &:hover {
+        color: $primary-hover;
+    }
 
-  @include focus-visible;
+    @include focus-visible;
 }
 
 // Utility classes
 .container {
-  @include container;
+    @include container;
 }
 
 .flex-center {
-  @include flex-center;
+    @include flex-center;
 }
 
 .flex-between {
-  @include flex-between;
+    @include flex-between;
 }
 
 .flex-column {
-  @include flex-column;
+    @include flex-column;
 }
 
 .card {
-  @include card;
+    @include card;
 }
 
 .sr-only {
-  @include visually-hidden;
+    @include visually-hidden;
 }
 
 // Spacing utilities
@@ -113,29 +113,29 @@ a {
 
 // Text utilities
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
 .text-primary {
-  color: $text-primary;
+    color: $text-primary;
 }
 
 .text-secondary {
-  color: $text-secondary;
+    color: $text-secondary;
 }
 
 .text-light {
-  color: $text-light;
+    color: $text-light;
 }
 
 .truncate {
-  @include truncate;
+    @include truncate;
 }
 
 .line-clamp-2 {
-  @include line-clamp(2);
+    @include line-clamp(2);
 }
 
 .line-clamp-3 {
-  @include line-clamp(3);
+    @include line-clamp(3);
 }
