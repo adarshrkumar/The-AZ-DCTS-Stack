@@ -127,21 +127,13 @@ async function createProject(projectName, options = {}) {
             'tsconfig.json',
             'astro.config.mjs',
             'drizzle.config.ts',
+            '.env.example',
+            '.gitignore',
+            'README.md',
         ];
 
         for (const file of filesToCopy) {
             const srcPath = join(appDir, file);
-            const destPath = join(targetDir, file);
-
-            if (existsSync(srcPath)) {
-                await copyFile(srcPath, destPath);
-            }
-        }
-
-        // Copy root files
-        const rootFiles = ['README.md', '.gitignore'];
-        for (const file of rootFiles) {
-            const srcPath = join(templateDir, file);
             const destPath = join(targetDir, file);
 
             if (existsSync(srcPath)) {
@@ -170,29 +162,16 @@ async function createProject(projectName, options = {}) {
         await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
         logSuccess('package.json updated');
 
-        // Step 5: Create .env.example and .env
-        logStep(5, 'Creating environment file template...');
-        const envExample = `# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
-
-# Clerk Authentication
-PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
-CLERK_SECRET_KEY="sk_test_..."
-
-# OpenAI (for Vercel AI SDK)
-OPENAI_API_KEY="sk-..."
-
-# Exa Search (for AI-powered search)
-EXA_API_KEY="..."
-
-# Vercel (for deployment)
-# These are automatically set by Vercel
-# VERCEL_URL
-# VERCEL_ENV
-`;
-        await writeFile(join(targetDir, '.env.example'), envExample);
-        await writeFile(join(targetDir, '.env'), envExample);
-        logSuccess('.env.example and .env created');
+        // Step 5: Create .env from .env.example
+        logStep(5, 'Creating environment file...');
+        const envExamplePath = join(targetDir, '.env.example');
+        const envPath = join(targetDir, '.env');
+        if (existsSync(envExamplePath)) {
+            await copyFile(envExamplePath, envPath);
+            logSuccess('.env created from .env.example');
+        } else {
+            logWarning('No .env.example found, skipping .env creation');
+        }
 
         // Step 6: Install dependencies if requested
         if (options.install) {
