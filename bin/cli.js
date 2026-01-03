@@ -72,6 +72,431 @@ async function promptYesNo(question, defaultValue = false) {
     return normalized === 'y' || normalized === 'yes';
 }
 
+function createAdapter(name, value = null, pkg = undefined) {
+    // Generate value if not provided
+    const adapterValue = value || name.toLowerCase().split(' ')[0];
+
+    // Generate pkg if not provided
+    let adapterPkg;
+    if (pkg !== undefined) {
+        adapterPkg = pkg; // Use explicit value (including null)
+    } else {
+        adapterPkg = adapterValue === 'static' ? null : `@astrojs/${adapterValue}`;
+    }
+
+    return { name, value: adapterValue, pkg: adapterPkg };
+}
+
+async function promptAdapter() {
+    const adapters = {
+        '1': createAdapter('Vercel'),
+        '2': createAdapter('Netlify'),
+        '3': createAdapter('Cloudflare'),
+        '4': createAdapter('Node'),
+        '5': createAdapter('Static (no adapter)'),
+    };
+
+    console.log(`\n${colors.cyan}Select deployment adapter:${colors.reset}`);
+    console.log(`  ${colors.green}1${colors.reset}. Vercel (default)`);
+    console.log(`  2. Netlify`);
+    console.log(`  3. Cloudflare`);
+    console.log(`  4. Node`);
+    console.log(`  5. Static (no adapter)`);
+
+    const answer = await promptUser('Enter your choice (1-5):');
+    const choice = answer || '1'; // Default to Vercel
+
+    const selected = adapters[choice];
+    if (!selected) {
+        logWarning(`Invalid choice, defaulting to Vercel`);
+        return adapters['1'];
+    }
+
+    return selected;
+}
+
+function generateAstroConfig(adapter) {
+    const configs = {
+        vercel: `import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import vercel from '@astrojs/vercel/serverless';
+import clerk from '@clerk/astro';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+    output: 'server',
+    adapter: vercel(),
+    integrations: [
+        react(),
+        clerk({
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
+        }),
+    ],
+    vite: {
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+                manifest: {
+                    name: 'ATSDC Stack App',
+                    short_name: 'ATSDC',
+                    description: 'Progressive Web App built with the ATSDC Stack',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    icons: [
+                        {
+                            src: 'pwa-192x192.png',
+                            sizes: '192x192',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                            purpose: 'any maskable',
+                        },
+                    ],
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                    runtimeCaching: [
+                        {
+                            urlPattern: /^https:\\/\\/api\\./i,
+                            handler: 'NetworkFirst',
+                            options: {
+                                cacheName: 'api-cache',
+                                expiration: {
+                                    maxEntries: 50,
+                                    maxAgeSeconds: 60 * 60 * 24,
+                                },
+                            },
+                        },
+                    ],
+                },
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                },
+            },
+        },
+    },
+});
+`,
+        netlify: `import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import netlify from '@astrojs/netlify';
+import clerk from '@clerk/astro';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+    output: 'server',
+    adapter: netlify(),
+    integrations: [
+        react(),
+        clerk({
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
+        }),
+    ],
+    vite: {
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+                manifest: {
+                    name: 'ATSDC Stack App',
+                    short_name: 'ATSDC',
+                    description: 'Progressive Web App built with the ATSDC Stack',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    icons: [
+                        {
+                            src: 'pwa-192x192.png',
+                            sizes: '192x192',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                            purpose: 'any maskable',
+                        },
+                    ],
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                    runtimeCaching: [
+                        {
+                            urlPattern: /^https:\\/\\/api\\./i,
+                            handler: 'NetworkFirst',
+                            options: {
+                                cacheName: 'api-cache',
+                                expiration: {
+                                    maxEntries: 50,
+                                    maxAgeSeconds: 60 * 60 * 24,
+                                },
+                            },
+                        },
+                    ],
+                },
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                },
+            },
+        },
+    },
+});
+`,
+        cloudflare: `import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import cloudflare from '@astrojs/cloudflare';
+import clerk from '@clerk/astro';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+    output: 'server',
+    adapter: cloudflare(),
+    integrations: [
+        react(),
+        clerk({
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
+        }),
+    ],
+    vite: {
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+                manifest: {
+                    name: 'ATSDC Stack App',
+                    short_name: 'ATSDC',
+                    description: 'Progressive Web App built with the ATSDC Stack',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    icons: [
+                        {
+                            src: 'pwa-192x192.png',
+                            sizes: '192x192',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                            purpose: 'any maskable',
+                        },
+                    ],
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                    runtimeCaching: [
+                        {
+                            urlPattern: /^https:\\/\\/api\\./i,
+                            handler: 'NetworkFirst',
+                            options: {
+                                cacheName: 'api-cache',
+                                expiration: {
+                                    maxEntries: 50,
+                                    maxAgeSeconds: 60 * 60 * 24,
+                                },
+                            },
+                        },
+                    ],
+                },
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                },
+            },
+        },
+    },
+});
+`,
+        node: `import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import node from '@astrojs/node';
+import clerk from '@clerk/astro';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+    output: 'server',
+    adapter: node({
+        mode: 'standalone'
+    }),
+    integrations: [
+        react(),
+        clerk({
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
+        }),
+    ],
+    vite: {
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+                manifest: {
+                    name: 'ATSDC Stack App',
+                    short_name: 'ATSDC',
+                    description: 'Progressive Web App built with the ATSDC Stack',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    icons: [
+                        {
+                            src: 'pwa-192x192.png',
+                            sizes: '192x192',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                            purpose: 'any maskable',
+                        },
+                    ],
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                    runtimeCaching: [
+                        {
+                            urlPattern: /^https:\\/\\/api\\./i,
+                            handler: 'NetworkFirst',
+                            options: {
+                                cacheName: 'api-cache',
+                                expiration: {
+                                    maxEntries: 50,
+                                    maxAgeSeconds: 60 * 60 * 24,
+                                },
+                            },
+                        },
+                    ],
+                },
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                },
+            },
+        },
+    },
+});
+`,
+        static: `import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import clerk from '@clerk/astro';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig({
+    output: 'static',
+    integrations: [
+        react(),
+        clerk({
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
+        }),
+    ],
+    vite: {
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+                manifest: {
+                    name: 'ATSDC Stack App',
+                    short_name: 'ATSDC',
+                    description: 'Progressive Web App built with the ATSDC Stack',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    icons: [
+                        {
+                            src: 'pwa-192x192.png',
+                            sizes: '192x192',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                        {
+                            src: 'pwa-512x512.png',
+                            sizes: '512x512',
+                            type: 'image/png',
+                            purpose: 'any maskable',
+                        },
+                    ],
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                    runtimeCaching: [
+                        {
+                            urlPattern: /^https:\\/\\/api\\./i,
+                            handler: 'NetworkFirst',
+                            options: {
+                                cacheName: 'api-cache',
+                                expiration: {
+                                    maxEntries: 50,
+                                    maxAgeSeconds: 60 * 60 * 24,
+                                },
+                            },
+                        },
+                    ],
+                },
+            }),
+        ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                },
+            },
+        },
+    },
+});
+`,
+    };
+
+    return configs[adapter] || configs.vercel;
+}
+
 async function setupDatabase(projectDir) {
     try {
         logStep('DB', 'Setting up database...');
@@ -121,11 +546,10 @@ async function createProject(projectName, options = {}) {
 
         const appDir = join(templateDir, 'app');
 
-        // Copy files from app directory
+        // Copy files from app directory (excluding astro.config.mjs - we'll generate it)
         const filesToCopy = [
             'package.json',
             'tsconfig.json',
-            'astro.config.mjs',
             'drizzle.config.ts',
             '.env.example',
             '.gitignore',
@@ -141,6 +565,12 @@ async function createProject(projectName, options = {}) {
             }
         }
 
+        // Generate astro.config.mjs based on adapter
+        const astroConfigPath = join(targetDir, 'astro.config.mjs');
+        const astroConfig = generateAstroConfig(options.adapter || 'vercel');
+        await writeFile(astroConfigPath, astroConfig);
+        logSuccess(`Generated astro.config.mjs with ${options.adapter || 'vercel'} adapter`);
+
         // Copy directory structures from app
         const dirsToCopy = ['src', 'public'];
         for (const dir of dirsToCopy) {
@@ -154,12 +584,31 @@ async function createProject(projectName, options = {}) {
 
         logSuccess('Template files copied');
 
-        // Step 4: Update package.json with project name
+        // Step 4: Update package.json with project name and adapter
         logStep(4, 'Updating package.json...');
         const packageJsonPath = join(targetDir, 'package.json');
         const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
         packageJson.name = projectName;
-        await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
+        // Add adapter dependency if not static
+        const adapterInfo = options.adapterInfo;
+        if (adapterInfo && adapterInfo.pkg) {
+            if (!packageJson.dependencies) {
+                packageJson.dependencies = {};
+            }
+            packageJson.dependencies[adapterInfo.pkg] = packageJson.dependencies['@astrojs/vercel'] || '^7.8.1';
+            // Remove vercel adapter if using a different one
+            if (adapterInfo.value !== 'vercel' && packageJson.dependencies['@astrojs/vercel']) {
+                delete packageJson.dependencies['@astrojs/vercel'];
+            }
+        } else if (options.adapter === 'static') {
+            // Remove all adapters for static build
+            if (packageJson.dependencies['@astrojs/vercel']) {
+                delete packageJson.dependencies['@astrojs/vercel'];
+            }
+        }
+
+        await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 4));
         logSuccess('package.json updated');
 
         // Step 5: Create .env from .env.example
@@ -332,6 +781,22 @@ ${colors.bright}${colors.green}OPTIONS${colors.reset}
             this will work. If not configured, this step will be skipped with
             a warning.
 
+    ${colors.cyan}--adapter, -a <adapter>${colors.reset}
+            Choose deployment adapter for your Astro application.
+            If omitted, you will be prompted (default: ${colors.green}vercel${colors.reset})
+
+            ${colors.yellow}Available adapters:${colors.reset}
+            • ${colors.green}vercel${colors.reset}      - Deploy to Vercel (serverless)
+            • netlify     - Deploy to Netlify
+            • cloudflare  - Deploy to Cloudflare Pages
+            • node        - Deploy to Node.js server
+            • static      - Static site generation (no adapter)
+
+            ${colors.yellow}Examples:${colors.reset}
+            --adapter vercel
+            --adapter static
+            -a netlify
+
     ${colors.cyan}--help, -h${colors.reset}
             Display this help message and exit.
 
@@ -353,6 +818,13 @@ ${colors.bright}${colors.green}EXAMPLES${colors.reset}
 
     ${colors.yellow}# Short flags work too${colors.reset}
     npx create-atsdc-stack my-app -i --db
+
+    ${colors.yellow}# Specify deployment adapter${colors.reset}
+    npx create-atsdc-stack my-app --adapter netlify
+    npx create-atsdc-stack my-app --adapter static --install
+
+    ${colors.yellow}# Complete setup with all options${colors.reset}
+    npx create-atsdc-stack my-app -i --db -a vercel
 
 ${colors.bright}${colors.green}WHAT GETS CREATED${colors.reset}
     ${colors.cyan}Project Structure:${colors.reset}
@@ -462,9 +934,17 @@ if (args.includes('--version') || args.includes('-v')) {
 // Check if flags were explicitly passed
 const installFlagPassed = args.includes('--install') || args.includes('-i');
 const setupDbFlagPassed = args.includes('--setup-db') || args.includes('--db');
+const adapterFlagIndex = args.findIndex(arg => arg === '--adapter' || arg === '-a');
+const adapterFlagPassed = adapterFlagIndex !== -1;
+
+// Get adapter value from flag if provided
+let adapterValue = null;
+if (adapterFlagPassed && args[adapterFlagIndex + 1]) {
+    adapterValue = args[adapterFlagIndex + 1].toLowerCase();
+}
 
 // Get project name (first argument that's not a flag)
-let projectName = args.find(arg => !arg.startsWith('-'));
+let projectName = args.find(arg => !arg.startsWith('-') && arg !== adapterValue);
 
 // Interactive mode setup
 const needsInteractive = !projectName || !installFlagPassed || (!setupDbFlagPassed && installFlagPassed);
@@ -507,10 +987,36 @@ if (shouldInstall && !setupDbFlagPassed) {
     console.log();
 }
 
+// Prompt for adapter if not provided
+let selectedAdapter;
+if (adapterFlagPassed && adapterValue) {
+    // Validate adapter value
+    const validAdapters = { vercel: true, netlify: true, cloudflare: true, node: true, static: true };
+    if (validAdapters[adapterValue]) {
+        const adapterMap = {
+            vercel: createAdapter('Vercel'),
+            netlify: createAdapter('Netlify'),
+            cloudflare: createAdapter('Cloudflare'),
+            node: createAdapter('Node'),
+            static: createAdapter('Static (no adapter)'),
+        };
+        selectedAdapter = adapterMap[adapterValue];
+        logSuccess(`Using ${selectedAdapter.name} adapter`);
+    } else {
+        logWarning(`Invalid adapter '${adapterValue}', using default`);
+        selectedAdapter = createAdapter('Vercel');
+    }
+} else {
+    selectedAdapter = await promptAdapter();
+    console.log();
+}
+
 // Build flags object
 const flags = {
     install: shouldInstall,
     setupDb: shouldSetupDb,
+    adapter: selectedAdapter.value,
+    adapterInfo: selectedAdapter,
 };
 
 log(`\n${colors.bright}${colors.cyan}Creating ATSDC Stack project...${colors.reset}\n`);
