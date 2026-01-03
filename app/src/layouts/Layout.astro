@@ -14,21 +14,16 @@ interface Props {
     description?: string;
 }
 
-let {
-    pageTitle,
-} = Astro.props;
-
 const {
+    pageTitle,
     description = siteConfig.stackDescription,
 } = Astro.props;
 
-if (pageTitle && Array.isArray(pageTitle) && pageTitle.length > 0) {
-    pageTitle = pageTitle.join(' | ');
-}
+const pageArray = Array.isArray(pageTitle) ? pageTitle : [pageTitle];
 
-const usePageTitle = pageTitle && pageTitle !== '' && pageTitle !== siteConfig.stackName && pageTitle.toLowerCase() !== 'index' && pageTitle.toLowerCase() !== 'home';
+const newPageTitle = pageArray ? (pageArray?.[0] === '' || pageArray?.[0] === siteConfig.stackName || pageArray?.[0].toLowerCase() === 'index' || pageArray?.[0].toLowerCase() === 'home') ? pageArray.filter((a, i) => i !== 0) : pageArray : null;
 
-const title = usePageTitle ? `${pageTitle} | ${siteConfig.stackName}` : siteConfig.stackName;
+const title = newPageTitle ? `${newPageTitle?.join(' | ')} | ${siteConfig.stackName}` : siteConfig.stackName;
 ---
 
 <!doctype html>
