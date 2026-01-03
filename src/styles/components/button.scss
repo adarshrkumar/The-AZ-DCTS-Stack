@@ -6,146 +6,146 @@
 // Usage (alternative): <button class="btn primary lg">Class chaining</button>
 
 .btn {
-  @include button-base;
+    @include button-base;
 
-  // Variant modifiers using data attributes (preferred for state/variants)
-  &[data-variant='primary'] {
-    @include button-primary;
-  }
-
-  &[data-variant='secondary'] {
-    @include button-secondary;
-  }
-
-  &[data-variant='danger'] {
-    background-color: $error-color;
-    color: $text-inverse;
-
-    &:hover:not(:disabled) {
-      background-color: darken($error-color, 10%);
+    // Variant modifiers using data attributes (preferred for state/variants)
+    &[data-variant='primary'] {
+        @include button-primary;
     }
-  }
 
-  &[data-variant='success'] {
-    background-color: $success-color;
-    color: $text-inverse;
-
-    &:hover:not(:disabled) {
-      background-color: darken($success-color, 10%);
+    &[data-variant='secondary'] {
+        @include button-secondary;
     }
-  }
 
-  // Size modifiers using data attributes
-  &[data-size='small'] {
-    padding: $spacing-extra-small $spacing-small;
-    font-size: $font-size-small;
-  }
+    &[data-variant='danger'] {
+        background-color: $error-color;
+        color: $text-inverse;
 
-  &[data-size='large'] {
-    padding: $spacing-medium $spacing-extra-large;
-    font-size: $font-size-large;
-  }
-
-  // State modifiers using data attributes
-  &[data-state='loading'] {
-    position: relative;
-    color: transparent;
-    pointer-events: none;
-
-    &::after {
-      content: '';
-      position: absolute;
-      width: 1rem;
-      height: 1rem;
-      top: 50%;
-      left: 50%;
-      margin-left: -0.5rem;
-      margin-top: -0.5rem;
-      border: 2px solid transparent;
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: button-spin 0.6s linear infinite;
+        &:hover:not(:disabled) {
+            background-color: darken($error-color, 10%);
+        }
     }
-  }
 
-  &[data-state='active'] {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+    &[data-variant='success'] {
+        background-color: $success-color;
+        color: $text-inverse;
 
-  // Layout modifiers using data attributes
-  &[data-width='full'] {
-    width: 100%;
-  }
-
-  &[data-has-icon='true'] {
-    display: inline-flex;
-    align-items: center;
-    gap: $spacing-small;
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
+        &:hover:not(:disabled) {
+            background-color: darken($success-color, 10%);
+        }
     }
-  }
 
-  // Alternative: Class chaining for variants when data attributes aren't appropriate
-  // Use this when you need CSS-only solutions or when data attributes feel verbose
-  &.primary {
-    @include button-primary;
-  }
-
-  &.secondary {
-    @include button-secondary;
-  }
-
-  &.danger {
-    background-color: $error-color;
-    color: $text-inverse;
-
-    &:hover:not(:disabled) {
-      background-color: darken($error-color, 10%);
+    // Size modifiers using data attributes
+    &[data-size='small'] {
+        padding: $spacing-extra-small $spacing-small;
+        font-size: $font-size-small;
     }
-  }
 
-  &.success {
-    background-color: $success-color;
-    color: $text-inverse;
-
-    &:hover:not(:disabled) {
-      background-color: darken($success-color, 10%);
+    &[data-size='large'] {
+        padding: $spacing-medium $spacing-extra-large;
+        font-size: $font-size-large;
     }
-  }
 
-  // Size class chaining alternatives
-  &.small {
-    padding: $spacing-extra-small $spacing-small;
-    font-size: $font-size-small;
-  }
+    // State modifiers using data attributes
+    &[data-state='loading'] {
+        position: relative;
+        color: transparent;
+        pointer-events: none;
 
-  &.large {
-    padding: $spacing-medium $spacing-extra-large;
-    font-size: $font-size-large;
-  }
-
-  // Layout class chaining alternatives
-  &.full {
-    width: 100%;
-  }
-
-  &.with-icon {
-    display: inline-flex;
-    align-items: center;
-    gap: $spacing-small;
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
+        &::after {
+            content: '';
+            position: absolute;
+            width: 1rem;
+            height: 1rem;
+            top: 50%;
+            left: 50%;
+            margin-left: -0.5rem;
+            margin-top: -0.5rem;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: button-spin 0.6s linear infinite;
+        }
     }
-  }
+
+    &[data-state='active'] {
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    // Layout modifiers using data attributes
+    &[data-width='full'] {
+        width: 100%;
+    }
+
+    &[data-has-icon='true'] {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-small;
+
+        svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+
+    // Alternative: Class chaining for variants when data attributes aren't appropriate
+    // Use this when you need CSS-only solutions or when data attributes feel verbose
+    &.primary {
+        @include button-primary;
+    }
+
+    &.secondary {
+        @include button-secondary;
+    }
+
+    &.danger {
+        background-color: $error-color;
+        color: $text-inverse;
+
+        &:hover:not(:disabled) {
+            background-color: darken($error-color, 10%);
+        }
+    }
+
+    &.success {
+        background-color: $success-color;
+        color: $text-inverse;
+
+        &:hover:not(:disabled) {
+            background-color: darken($success-color, 10%);
+        }
+    }
+
+    // Size class chaining alternatives
+    &.small {
+        padding: $spacing-extra-small $spacing-small;
+        font-size: $font-size-small;
+    }
+
+    &.large {
+        padding: $spacing-medium $spacing-extra-large;
+        font-size: $font-size-large;
+    }
+
+    // Layout class chaining alternatives
+    &.full {
+        width: 100%;
+    }
+
+    &.with-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-small;
+
+        svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
 }
 
 @keyframes button-spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
