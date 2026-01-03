@@ -18,8 +18,8 @@ export default defineConfig({
     integrations: [
         react(),
         clerk({
-        afterSignInUrl: '/',
-        afterSignUpUrl: '/',
+            afterSignInUrl: '/',
+            afterSignUpUrl: '/',
         }),
     ],
     vite: {
