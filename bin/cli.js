@@ -115,19 +115,80 @@ async function promptAdapter() {
     return selected;
 }
 
-function generateAstroConfig(adapter) {
+async function promptIntegrations() {
+    const integrations = {
+        react: { name: 'React', pkg: '@astrojs/react', deps: ['react', 'react-dom', '@types/react', '@types/react-dom'] },
+        vue: { name: 'Vue', pkg: '@astrojs/vue', deps: ['vue'] },
+        svelte: { name: 'Svelte', pkg: '@astrojs/svelte', deps: ['svelte'] },
+        solid: { name: 'Solid', pkg: '@astrojs/solid-js', deps: ['solid-js'] },
+    };
+
+    console.log(`\n${colors.cyan}Select other UI framework integrations (space to select, enter when done):${colors.reset}`);
+    console.log(`  ${colors.green}1${colors.reset}. React (default)`);
+    console.log(`  2. Vue`);
+    console.log(`  3. Svelte`);
+    console.log(`  4. Solid`);
+    console.log(`  ${colors.yellow}0${colors.reset}. None (no other UI framework)`);
+
+    const answer = await promptUser('Enter numbers separated by spaces (e.g., "1 2" for React and Vue):');
+    const choices = answer ? answer.split(/\s+/).filter(Boolean) : ['1']; // Default to React
+
+    const selected = [];
+    const choiceMap = {
+        '1': 'react',
+        '2': 'vue',
+        '3': 'svelte',
+        '4': 'solid',
+    };
+
+    if (!choices.includes('0')) {
+        for (const choice of choices) {
+            const key = choiceMap[choice];
+            if (key && integrations[key]) {
+                selected.push({ key, ...integrations[key] });
+            }
+        }
+    }
+
+    // Default to React if no valid selections
+    if (selected.length === 0 && !choices.includes('0')) {
+        logWarning('No valid integrations selected, defaulting to React');
+        selected.push({ key: 'react', ...integrations.react });
+    }
+
+    return selected;
+}
+
+function generateAstroConfig(adapter, integrations = []) {
+    // Generate integration imports
+    const integrationImports = integrations
+        .map(int => `import ${int.key} from '${int.pkg}';`)
+        .join('\n');
+
+    // Generate integration calls
+    const integrationCalls = integrations
+        .map(int => `        ${int.key}(),`)
+        .join('\n');
+
     const configs = {
         vercel: `import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
+${integrationImports}
+import vercel from '@astrojs/vercel';
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     output: 'server',
-    adapter: vercel(),
+    adapter: vercel({
+        imageService: true,
+    }),
+    image: {
+        service: {
+            entrypoint: 'astro/assets/services/noop',
+        },
+    },
     integrations: [
-        react(),
+${integrationCalls}
         clerk({
             afterSignInUrl: '/',
             afterSignUpUrl: '/',
@@ -185,7 +246,8 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                    api: 'modern-compiler',
+                    additionalData: \`@use "@/styles/variables/globals.scss" as *;\`,
                 },
             },
         },
@@ -193,7 +255,7 @@ export default defineConfig({
 });
 `,
         netlify: `import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+${integrationImports}
 import netlify from '@astrojs/netlify';
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -202,7 +264,7 @@ export default defineConfig({
     output: 'server',
     adapter: netlify(),
     integrations: [
-        react(),
+${integrationCalls}
         clerk({
             afterSignInUrl: '/',
             afterSignUpUrl: '/',
@@ -260,15 +322,16 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                    api: 'modern-compiler',
+                    additionalData: \`@use "@/styles/variables/globals.scss" as *;\`,
                 },
             },
         },
     },
 });
 `,
-        cloudflare: `import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+        cloudflare: `import { defineConfig} from 'astro/config';
+${integrationImports}
 import cloudflare from '@astrojs/cloudflare';
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -277,7 +340,7 @@ export default defineConfig({
     output: 'server',
     adapter: cloudflare(),
     integrations: [
-        react(),
+${integrationCalls}
         clerk({
             afterSignInUrl: '/',
             afterSignUpUrl: '/',
@@ -335,7 +398,8 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                    api: 'modern-compiler',
+                    additionalData: \`@use "@/styles/variables/globals.scss" as *;\`,
                 },
             },
         },
@@ -343,7 +407,7 @@ export default defineConfig({
 });
 `,
         node: `import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+${integrationImports}
 import node from '@astrojs/node';
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -354,7 +418,7 @@ export default defineConfig({
         mode: 'standalone'
     }),
     integrations: [
-        react(),
+${integrationCalls}
         clerk({
             afterSignInUrl: '/',
             afterSignUpUrl: '/',
@@ -412,7 +476,8 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                    api: 'modern-compiler',
+                    additionalData: \`@use "@/styles/variables/globals.scss" as *;\`,
                 },
             },
         },
@@ -420,14 +485,14 @@ export default defineConfig({
 });
 `,
         static: `import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
+${integrationImports}
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
     output: 'static',
     integrations: [
-        react(),
+${integrationCalls}
         clerk({
             afterSignInUrl: '/',
             afterSignUpUrl: '/',
@@ -485,7 +550,8 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: \`@import "@/styles/variables/globals.scss";\`,
+                    api: 'modern-compiler',
+                    additionalData: \`@use "@/styles/variables/globals.scss" as *;\`,
                 },
             },
         },
@@ -565,9 +631,9 @@ async function createProject(projectName, options = {}) {
             }
         }
 
-        // Generate astro.config.mjs based on adapter
+        // Generate astro.config.mjs based on adapter and integrations
         const astroConfigPath = join(targetDir, 'astro.config.mjs');
-        const astroConfig = generateAstroConfig(options.adapter || 'vercel');
+        const astroConfig = generateAstroConfig(options.adapter || 'vercel', options.integrations || []);
         await writeFile(astroConfigPath, astroConfig);
         logSuccess(`Generated astro.config.mjs with ${options.adapter || 'vercel'} adapter`);
 
@@ -584,18 +650,23 @@ async function createProject(projectName, options = {}) {
 
         logSuccess('Template files copied');
 
-        // Step 4: Update package.json with project name and adapter
+        // Step 4: Update package.json with project name, adapter, and integrations
         logStep(4, 'Updating package.json...');
         const packageJsonPath = join(targetDir, 'package.json');
         const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
         packageJson.name = projectName;
 
+        // Initialize dependencies if not present
+        if (!packageJson.dependencies) {
+            packageJson.dependencies = {};
+        }
+        if (!packageJson.devDependencies) {
+            packageJson.devDependencies = {};
+        }
+
         // Add adapter dependency if not static
         const adapterInfo = options.adapterInfo;
         if (adapterInfo && adapterInfo.pkg) {
-            if (!packageJson.dependencies) {
-                packageJson.dependencies = {};
-            }
             packageJson.dependencies[adapterInfo.pkg] = packageJson.dependencies['@astrojs/vercel'] || '^7.8.1';
             // Remove vercel adapter if using a different one
             if (adapterInfo.value !== 'vercel' && packageJson.dependencies['@astrojs/vercel']) {
@@ -605,6 +676,39 @@ async function createProject(projectName, options = {}) {
             // Remove all adapters for static build
             if (packageJson.dependencies['@astrojs/vercel']) {
                 delete packageJson.dependencies['@astrojs/vercel'];
+            }
+        }
+
+        // Remove React by default (will be added back if selected)
+        if (packageJson.dependencies['@astrojs/react']) {
+            delete packageJson.dependencies['@astrojs/react'];
+        }
+        if (packageJson.dependencies['react']) {
+            delete packageJson.dependencies['react'];
+        }
+        if (packageJson.dependencies['react-dom']) {
+            delete packageJson.dependencies['react-dom'];
+        }
+        if (packageJson.devDependencies['@types/react']) {
+            delete packageJson.devDependencies['@types/react'];
+        }
+        if (packageJson.devDependencies['@types/react-dom']) {
+            delete packageJson.devDependencies['@types/react-dom'];
+        }
+
+        // Add selected integrations and their dependencies
+        const integrations = options.integrations || [];
+        for (const integration of integrations) {
+            // Add the integration package
+            packageJson.dependencies[integration.pkg] = '^latest';
+
+            // Add framework dependencies
+            for (const dep of integration.deps) {
+                if (dep.startsWith('@types/')) {
+                    packageJson.devDependencies[dep] = '^latest';
+                } else {
+                    packageJson.dependencies[dep] = '^latest';
+                }
             }
         }
 
@@ -1011,12 +1115,23 @@ if (adapterFlagPassed && adapterValue) {
     console.log();
 }
 
+// Prompt for integrations
+const selectedIntegrations = await promptIntegrations();
+if (selectedIntegrations.length > 0) {
+    const integrationNames = selectedIntegrations.map(int => int.name).join(', ');
+    logSuccess(`Selected integrations: ${integrationNames}`);
+} else {
+    logSuccess('No UI framework integrations selected');
+}
+console.log();
+
 // Build flags object
 const flags = {
     install: shouldInstall,
     setupDb: shouldSetupDb,
     adapter: selectedAdapter.value,
     adapterInfo: selectedAdapter,
+    integrations: selectedIntegrations,
 };
 
 log(`\n${colors.bright}${colors.cyan}Creating ATSDC Stack project...${colors.reset}\n`);
