@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../variables/globals' as *;
 @use '../variables/mixins' as *;
 
@@ -22,7 +23,7 @@
         color: $text-inverse;
 
         &:hover:not(:disabled) {
-            background-color: darken($error-color, 10%);
+            background-color: color.adjust($error-color, $lightness: -10%);
         }
     }
 
@@ -31,7 +32,7 @@
         color: $text-inverse;
 
         &:hover:not(:disabled) {
-            background-color: darken($success-color, 10%);
+            background-color: color.adjust($success-color, $lightness: -10%);
         }
     }
 
@@ -103,7 +104,7 @@
         color: $text-inverse;
 
         &:hover:not(:disabled) {
-            background-color: darken($error-color, 10%);
+            background-color: color.adjust($error-color, $lightness: -10%);
         }
     }
 
@@ -112,7 +113,7 @@
         color: $text-inverse;
 
         &:hover:not(:disabled) {
-            background-color: darken($success-color, 10%);
+            background-color: color.adjust($success-color, $lightness: -10%);
         }
     }
 
