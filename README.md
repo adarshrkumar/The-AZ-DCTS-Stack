@@ -130,7 +130,7 @@ Your application will be available at `http://localhost:4321`
 │       ├── variables/
 │       │   ├── globals.scss # SCSS global variables
 │       │   └── mixins.scss  # SCSS mixins
-│       ├── _reset.scss     # CSS reset
+│       ├── reset.scss      # CSS reset
 │       ├── global.scss     # Global styles
 │       ├── components/     # Component-specific styles
 │       └── pages/          # Page-specific styles
