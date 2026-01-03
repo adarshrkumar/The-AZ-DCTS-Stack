@@ -85,7 +85,7 @@ src/
 │   ├── schema.ts       # Drizzle ORM schemas
 │   └── validations.ts  # Zod validation schemas
 ├── layouts/            # Page layouts
-│   └── BaseLayout.astro
+│   └── Layout.astro
 ├── lib/                # Utility libraries
 │   ├── config.ts       # App configuration
 │   ├── content-converter.ts # Markdown/HTML conversion

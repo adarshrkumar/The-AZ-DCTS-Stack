@@ -119,7 +119,7 @@ Your application will be available at `http://localhost:4321`
 │   │   │   ├── schema.ts      # Drizzle ORM schema definitions
 │   │   │   └── validations.ts # Zod validation schemas
 │   │   ├── layouts/
-│   │   │   └── BaseLayout.astro # Base layout component
+│   │   │   └── Layout.astro # Base layout component
 │   │   ├── lib/            # Utility libraries
 │   │   │   ├── config.ts   # Application configuration
 │   │   │   ├── content-converter.ts # Markdown/HTML conversion
@@ -166,12 +166,12 @@ This stack enforces a strict separation of concerns for styling with **semantic,
 ```astro
 ---
 // src/pages/example.astro
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import Layout from '@/layouts/Layout.astro';
 import '@/styles/components/button.scss';
 import '@/styles/pages/example.scss';
 ---
 
-<BaseLayout title="Example Page">
+<Layout title="Example Page">
   <div class="example-page">
     <h1>Hello World</h1>
     <!-- Preferred: Data attributes for modifiers -->
@@ -180,7 +180,7 @@ import '@/styles/pages/example.scss';
     <!-- Alternative: Class chaining -->
     <button class="btn primary lg">Click Me Too</button>
   </div>
-</BaseLayout>
+</Layout>
 ```
 
 ### Styling Approach

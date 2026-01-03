@@ -6,7 +6,7 @@
  * - All styles imported from external SCSS file
  * - Component-specific styles in separate files
  */
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import Layout from '@/layouts/Layout.astro';
 import { siteConfig } from '@/lib/config';
 
 // Import component-specific styles
@@ -14,7 +14,7 @@ import '@/styles/components/button.scss';
 import '@/styles/pages/index.scss';
 ---
 
-<BaseLayout title={`${siteConfig.stackName} - Home`}>
+<Layout title={`${siteConfig.stackName} - Home`}>
     <main class="home">
         <div class="container">
             <header class="home__header">
@@ -84,4 +84,4 @@ import '@/styles/pages/index.scss';
             </section>
         </div>
     </main>
-</BaseLayout>
+</Layout>

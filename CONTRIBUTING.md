@@ -168,16 +168,16 @@ import '@/styles/components/button.scss';
 **When to use data attributes vs. class chaining:**
 
 - **Data attributes (preferred):**
-    - Dynamic states (loading, active, disabled)
-    - Variants (primary, secondary, success, danger)
-    - Configuration (size, padding, alignment)
-    - Semantic modifiers that describe state
+  - Dynamic states (loading, active, disabled)
+  - Variants (primary, secondary, success, danger)
+  - Configuration (size, padding, alignment)
+  - Semantic modifiers that describe state
 
 - **Class chaining (when appropriate):**
-    - CSS-only solutions without JavaScript
-    - When data attributes feel verbose
-    - Simple utility classes
-    - When working with third-party libraries
+  - CSS-only solutions without JavaScript
+  - When data attributes feel verbose
+  - Simple utility classes
+  - When working with third-party libraries
 
 #### Database Schema
 
@@ -290,7 +290,7 @@ src/
 │   ├── schema.ts     # Drizzle schemas
 │   └── validations.ts # Zod schemas
 ├── layouts/          # Layout components
-│   └── BaseLayout.astro
+│   └── Layout.astro
 ├── pages/            # Routes and pages
 │   ├── api/          # API routes
 │   │   └── endpoint.ts
