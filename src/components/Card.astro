@@ -8,9 +8,9 @@
  */
 
 interface Props {
-  title?: string;
-  href?: string;
-  class?: string;
+    title?: string;
+    href?: string;
+    class?: string;
 }
 
 const { title, href, class: className = '' } = Astro.props;
@@ -20,17 +20,17 @@ import '@/styles/components/card.scss';
 ---
 
 {href ? (
-  <a href={href} class={`card-component ${className}`}>
-    {title && <h3 class="card-component__title">{title}</h3>}
-    <div class="card-component__content">
-      <slot />
-    </div>
-  </a>
+    <a href={href} class={`card-component ${className}`}>
+        {title && <h3 class="card-component__title">{title}</h3>}
+        <div class="card-component__content">
+            <slot />
+        </div>
+    </a>
 ) : (
-  <div class={`card-component ${className}`}>
-    {title && <h3 class="card-component__title">{title}</h3>}
-    <div class="card-component__content">
-      <slot />
+    <div class={`card-component ${className}`}>
+        {title && <h3 class="card-component__title">{title}</h3>}
+        <div class="card-component__content">
+            <slot />
+        </div>
     </div>
-  </div>
 )}

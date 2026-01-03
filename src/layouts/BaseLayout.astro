@@ -10,37 +10,37 @@
 import { siteConfig } from '@/lib/config';
 
 interface Props {
-  title?: string;
-  description?: string;
+    title?: string;
+    description?: string;
 }
 
 const {
-  title = siteConfig.stackName,
-  description = siteConfig.stackDescription,
+    title = siteConfig.stackName,
+    description = siteConfig.stackDescription,
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta name="generator" content={Astro.generator} />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={description} />
+        <meta name="generator" content={Astro.generator} />
 
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <!-- Favicons -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- PWA manifest -->
-    <link rel="manifest" href="/manifest.webmanifest" />
+        <!-- PWA manifest -->
+        <link rel="manifest" href="/manifest.webmanifest" />
 
-    <title>{title}</title>
+        <title>{title}</title>
 
-    <!-- Global styles imported from external SCSS file -->
-    <link rel="stylesheet" href="/src/styles/global.scss" />
-  </head>
-  <body>
-    <slot />
-  </body>
+        <!-- Global styles imported from external SCSS file -->
+        <link rel="stylesheet" href="/src/styles/global.scss" />
+    </head>
+    <body>
+        <slot />
+    </body>
 </html>
