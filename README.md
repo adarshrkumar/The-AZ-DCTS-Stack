@@ -110,34 +110,41 @@ Your application will be available at `http://localhost:4321`
 ## 📁 Project Structure
 
 ```text
+├── app/                    # Astro application
+│   ├── public/             # Static assets
+│   ├── src/
+│   │   ├── components/     # Reusable Astro components
+│   │   ├── db/
+│   │   │   ├── initialize.ts  # Database client and initialization
+│   │   │   ├── schema.ts      # Drizzle ORM schema definitions
+│   │   │   └── validations.ts # Zod validation schemas
+│   │   ├── layouts/
+│   │   │   └── BaseLayout.astro # Base layout component
+│   │   ├── lib/            # Utility libraries
+│   │   │   ├── config.ts   # Application configuration
+│   │   │   ├── content-converter.ts # Markdown/HTML conversion
+│   │   │   ├── dom-utils.ts # DOM manipulation utilities
+│   │   │   └── exa-search.ts # AI-powered search
+│   │   ├── pages/
+│   │   │   ├── api/        # API routes
+│   │   │   │   ├── chat.ts # Vercel AI SDK chat endpoint
+│   │   │   │   └── posts.ts # CRUD operations for posts
+│   │   │   └── index.astro # Home page
+│   │   └── styles/
+│   │       ├── variables/
+│   │       │   ├── globals.scss # SCSS global variables
+│   │       │   └── mixins.scss  # SCSS mixins
+│   │       ├── reset.scss  # CSS reset
+│   │       ├── global.scss # Global styles
+│   │       ├── components/ # Component-specific styles
+│   │       └── pages/      # Page-specific styles
+│   ├── astro.config.mjs    # Astro configuration
+│   ├── drizzle.config.ts   # Drizzle ORM configuration
+│   ├── package.json        # App dependencies
+│   └── tsconfig.json       # TypeScript configuration
 ├── bin/
-│   └── cli.js              # CLI entry point
-├── public/                 # Static assets
-├── src/
-│   ├── components/         # Reusable Astro components
-│   ├── db/
-│   │   ├── initialize.ts  # Database client and initialization
-│   │   ├── schema.ts      # Drizzle ORM schema definitions
-│   │   └── validations.ts # Zod validation schemas
-│   ├── layouts/
-│   │   └── BaseLayout.astro # Base layout component
-│   ├── pages/
-│   │   ├── api/           # API routes
-│   │   │   ├── chat.ts    # Vercel AI SDK chat endpoint
-│   │   │   └── posts.ts   # CRUD operations for posts
-│   │   └── index.astro    # Home page
-│   └── styles/
-│       ├── variables/
-│       │   ├── globals.scss # SCSS global variables
-│       │   └── mixins.scss  # SCSS mixins
-│       ├── reset.scss      # CSS reset
-│       ├── global.scss     # Global styles
-│       ├── components/     # Component-specific styles
-│       └── pages/          # Page-specific styles
-├── astro.config.mjs        # Astro configuration
-├── drizzle.config.ts       # Drizzle ORM configuration
-├── package.json
-└── tsconfig.json
+│   └── cli.js              # CLI entry point for scaffolding
+└── package.json            # Root workspace configuration
 ```
 
 ## 🎨 SCSS Architecture
@@ -149,8 +156,8 @@ This stack enforces a strict separation of concerns for styling with **semantic,
 1. **Semantic class names** - Use readable, meaningful class names (e.g., `.btn`, `.card`, `.header`) instead of utility classes (e.g., `.px-4`, `.bg-blue-500`)
 2. **No inline `<style>` tags** in `.astro` files (except for truly standalone components)
 3. **All styles in external SCSS files** for better maintainability and smaller CSS footprint
-4. **Component-specific styles** in `src/styles/components/`
-5. **Page-specific styles** in `src/styles/pages/`
+4. **Component-specific styles** in `app/src/styles/components/`
+5. **Page-specific styles** in `app/src/styles/pages/`
 6. **Use data attributes for modifiers** (preferred over BEM modifier classes)
 7. **Use class chaining** when data attributes aren't appropriate
 

@@ -119,16 +119,28 @@ async function createProject(projectName, options = {}) {
         // Step 3: Copy template files
         logStep(3, 'Copying template files...');
 
+        const appDir = join(templateDir, 'app');
+
+        // Copy files from app directory
         const filesToCopy = [
             'package.json',
             'tsconfig.json',
             'astro.config.mjs',
             'drizzle.config.ts',
-            'README.md',
-            '.gitignore',
         ];
 
         for (const file of filesToCopy) {
+            const srcPath = join(appDir, file);
+            const destPath = join(targetDir, file);
+
+            if (existsSync(srcPath)) {
+                await copyFile(srcPath, destPath);
+            }
+        }
+
+        // Copy root files
+        const rootFiles = ['README.md', '.gitignore'];
+        for (const file of rootFiles) {
             const srcPath = join(templateDir, file);
             const destPath = join(targetDir, file);
 
@@ -137,10 +149,10 @@ async function createProject(projectName, options = {}) {
             }
         }
 
-        // Copy directory structures
-        const dirsToCopy = ['src', 'public', 'bin'];
+        // Copy directory structures from app
+        const dirsToCopy = ['src', 'public'];
         for (const dir of dirsToCopy) {
-            const srcPath = join(templateDir, dir);
+            const srcPath = join(appDir, dir);
             const destPath = join(targetDir, dir);
 
             if (existsSync(srcPath)) {
