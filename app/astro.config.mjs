@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import clerk from '@clerk/astro';
 import { VitePWA } from 'vite-plugin-pwa';
 
