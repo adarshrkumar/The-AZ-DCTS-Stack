@@ -11,9 +11,7 @@
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
-        "db:studio": "drizzle-kit studio",
-        "beads:init": "bd init",
-        "beads:init:stealth": "bd init --stealth"
+        "db:studio": "drizzle-kit studio"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.6",

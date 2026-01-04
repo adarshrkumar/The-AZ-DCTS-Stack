@@ -27,13 +27,7 @@ npm install
 For projects that will commit Beads data to the repository:
 
 ```bash
-npm run beads:init
-```
-
-Or from the root directory:
-
-```bash
-npm run beads:init
+bd init
 ```
 
 This creates a `.beads/` directory that will be tracked by git.
@@ -43,7 +37,7 @@ This creates a `.beads/` directory that will be tracked by git.
 For privacy-conscious development where you don't want to commit Beads files:
 
 ```bash
-npm run beads:init:stealth
+bd init --stealth
 ```
 
 This enables local-only operation without committing files to the main repository.
@@ -128,7 +122,7 @@ app/
 
 ## Best Practices
 
-1. **Initialize early**: Run `npm run beads:init` when starting a new project
+1. **Initialize early**: Run `bd init` when starting a new project
 2. **Use hierarchical tasks**: Break large features into subtasks with parent relationships
 3. **Label consistently**: Use the default labels or customize them for your workflow
 4. **Commit regularly**: Beads files are small and merge-friendly
@@ -174,10 +168,10 @@ git pull
 
 ```bash
 # Initialize Beads
-npm run beads:init
+bd init
 
 # Initialize in stealth mode
-npm run beads:init:stealth
+bd init --stealth
 
 # Create a task
 bd create "Task description"
