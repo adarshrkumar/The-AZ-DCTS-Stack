@@ -12,17 +12,23 @@ This is a monorepo with two main parts:
 
 ## Development Commands
 
-Run these commands from the **root directory** (they delegate to the app workspace):
+### Root Directory Commands
+
+These commands can be run from the root directory (they delegate to the app workspace):
 
 ```bash
-# Development
 npm run dev              # Start dev server at http://localhost:4321
-
-# Build & Preview
 npm run build            # Type-check and build for production
 npm run preview          # Preview production build locally
+```
 
-# Database Operations
+### App Directory Commands
+
+Database commands should be run from the `app/` directory:
+
+```bash
+cd app
+
 npm run db:push          # Push schema changes to database (no migrations)
 npm run db:generate      # Generate migration files from schema
 npm run db:migrate       # Apply pending migrations

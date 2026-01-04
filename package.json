@@ -9,11 +9,7 @@
     "scripts": {
         "dev": "npm run dev --workspace=app",
         "build": "npm run build --workspace=app",
-        "preview": "npm run preview --workspace=app",
-        "db:generate": "npm run db:generate --workspace=app",
-        "db:migrate": "npm run db:migrate --workspace=app",
-        "db:push": "npm run db:push --workspace=app",
-        "db:studio": "npm run db:studio --workspace=app"
+        "preview": "npm run preview --workspace=app"
     },
     "workspaces": [
         "app"
