@@ -751,6 +751,42 @@ async function createProject(projectName, options = {}) {
             await setupDatabase(targetDir);
         }
 
+        // Step 8: Initialize Beads if requested (before final steps)
+        if (options.install) {
+            const shouldInitBeads = promptYesNo(
+                '\nInitialize Beads task tracking system?',
+                false
+            );
+
+            if (shouldInitBeads) {
+                const useStealth = promptYesNo(
+                    'Use stealth mode (local-only, no git commits)?',
+                    false
+                );
+
+                try {
+                    log('\n' + '='.repeat(60), 'bright');
+                    logStep('Beads', 'Initializing Beads task tracking...');
+                    const beadsCommand = useStealth ? 'npx bd init --stealth' : 'npx bd init';
+                    execSync(beadsCommand, {
+                        cwd: targetDir,
+                        stdio: 'inherit',
+                    });
+                    logSuccess('Beads initialized successfully');
+                    if (useStealth) {
+                        console.log(`  ${colors.yellow}ℹ${colors.reset} Beads is running in stealth mode (local-only)`);
+                    } else {
+                        console.log(`  ${colors.yellow}ℹ${colors.reset} Beads files will be tracked in git`);
+                    }
+                    log('='.repeat(60), 'bright');
+                } catch (error) {
+                    logWarning('Beads initialization skipped or failed. You can initialize later with: bd init');
+                }
+            } else {
+                console.log(`\n  ${colors.yellow}ℹ${colors.reset} You can initialize Beads later with: ${colors.cyan}bd init${colors.reset}`);
+            }
+        }
+
         // Display next steps
         log('\n' + '='.repeat(60), 'bright');
         log('🎉 Project created successfully!', 'green');
@@ -780,15 +816,17 @@ async function createProject(projectName, options = {}) {
         console.log(`  • Clerk: ${colors.cyan}https://clerk.com/docs${colors.reset}`);
         console.log(`  • Vercel AI SDK: ${colors.cyan}https://sdk.vercel.ai${colors.reset}`);
         console.log(`  • Exa Search: ${colors.cyan}https://docs.exa.ai${colors.reset}`);
+        console.log(`  • Beads: ${colors.cyan}https://github.com/steveyegge/beads${colors.reset}`);
 
         console.log('\nNew utilities added:');
         console.log(`  • Cheerio - DOM manipulation in ${colors.cyan}src/lib/dom-utils.ts${colors.reset}`);
         console.log(`  • Marked/Turndown - Content conversion in ${colors.cyan}src/lib/content-converter.ts${colors.reset}`);
         console.log(`  • Exa - AI search in ${colors.cyan}src/lib/exa-search.ts${colors.reset}`);
+        console.log(`  • Beads - AI agent task tracking. See ${colors.cyan}BEADS.md${colors.reset} for usage`);
 
         log('\n' + '='.repeat(60), 'bright');
 
-        // Step 8: Vercel CLI login (if dependencies were installed) - at the very end
+        // Step 9: Vercel CLI login (if dependencies were installed) - at the very end
         if (options.install) {
             const shouldLoginVercel = promptYesNo(
                 '\nLogin to Vercel now?',
@@ -987,6 +1025,10 @@ ${colors.bright}${colors.green}TECHNOLOGY STACK${colors.reset}
     ${colors.cyan}• Marked${colors.reset}            - Markdown to HTML conversion
     ${colors.cyan}• Turndown${colors.reset}          - HTML to Markdown conversion
 
+    ${colors.bright}AI Agent Tools:${colors.reset}
+    ${colors.cyan}• Beads${colors.reset}             - Git-backed task tracking for AI agents
+                       Persistent memory across coding sessions
+
     ${colors.bright}Progressive Web App:${colors.reset}
     ${colors.cyan}• Vite PWA${colors.reset}          - Offline support, installable apps, service workers
 
@@ -1013,6 +1055,8 @@ ${colors.bright}${colors.green}AVAILABLE SCRIPTS${colors.reset}
     ${colors.cyan}npm run db:push${colors.reset}     - Push schema changes to database
     ${colors.cyan}npm run db:generate${colors.reset} - Generate migration files
     ${colors.cyan}npm run db:studio${colors.reset}   - Open Drizzle Studio (database GUI)
+    ${colors.cyan}bd init${colors.reset}            - Initialize Beads task tracking
+    ${colors.cyan}bd create "task"${colors.reset}   - Create a new task in Beads
 
 ${colors.bright}${colors.green}RESOURCES${colors.reset}
     ${colors.cyan}Documentation:${colors.reset}

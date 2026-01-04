@@ -12,22 +12,51 @@ This is a monorepo with two main parts:
 
 ## Development Commands
 
-Run these commands from the **root directory** (they delegate to the app workspace):
+### Root Directory Commands
+
+These commands can be run from the root directory (they delegate to the app workspace):
 
 ```bash
-# Development
 npm run dev              # Start dev server at http://localhost:4321
-
-# Build & Preview
 npm run build            # Type-check and build for production
 npm run preview          # Preview production build locally
+```
 
-# Database Operations
+### App Directory Commands
+
+Database commands should be run from the `app/` directory:
+
+```bash
+cd app
+
 npm run db:push          # Push schema changes to database (no migrations)
 npm run db:generate      # Generate migration files from schema
 npm run db:migrate       # Apply pending migrations
 npm run db:studio        # Open Drizzle Studio GUI for database
 ```
+
+## Beads Integration
+
+**Beads** is a distributed, git-backed graph issue tracker designed for AI coding agents. It provides persistent memory for managing long-horizon tasks across multiple sessions.
+
+**Key features:**
+- Git-backed storage in `.beads/` directory with JSONL files
+- Hierarchical task IDs for epic-to-subtask relationships (e.g., `bd-a3f8.1`)
+- Hash-based IDs prevent merge conflicts in multi-agent workflows
+- Automatic memory decay and compaction to preserve token efficiency
+- SQLite caching for fast local operations
+
+**Setup:**
+1. Install dependencies: `npm install`
+2. Initialize: `bd init` (or `bd init --stealth` for local-only mode)
+3. Configure via `app/.beadsconfig.json`
+4. See `app/BEADS.md` for complete usage guide
+
+**Common commands:**
+- `bd create "Task description"` - Create new task
+- `bd list` - List all tasks
+- `bd show <task-id>` - View task details
+- `bd update <task-id> --status done` - Update task status
 
 ## Architecture Overview
 
