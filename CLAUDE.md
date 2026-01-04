@@ -27,7 +27,33 @@ npm run db:push          # Push schema changes to database (no migrations)
 npm run db:generate      # Generate migration files from schema
 npm run db:migrate       # Apply pending migrations
 npm run db:studio        # Open Drizzle Studio GUI for database
+
+# Beads (AI Agent Task Management)
+npm run beads:init       # Initialize Beads for task tracking
+npm run beads:init:stealth  # Initialize Beads in local-only mode
 ```
+
+## Beads Integration
+
+**Beads** is a distributed, git-backed graph issue tracker designed for AI coding agents. It provides persistent memory for managing long-horizon tasks across multiple sessions.
+
+**Key features:**
+- Git-backed storage in `.beads/` directory with JSONL files
+- Hierarchical task IDs for epic-to-subtask relationships (e.g., `bd-a3f8.1`)
+- Hash-based IDs prevent merge conflicts in multi-agent workflows
+- Automatic memory decay and compaction to preserve token efficiency
+- SQLite caching for fast local operations
+
+**Setup:**
+1. Initialize: `npm run beads:init` (or `beads:init:stealth` for local-only)
+2. Configure via `app/.beadsconfig.json`
+3. See `app/BEADS.md` for complete usage guide
+
+**Common commands:**
+- `bd create "Task description"` - Create new task
+- `bd list` - List all tasks
+- `bd show <task-id>` - View task details
+- `bd update <task-id> --status done` - Update task status
 
 ## Architecture Overview
 

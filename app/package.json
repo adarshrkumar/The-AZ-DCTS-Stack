@@ -11,7 +11,9 @@
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
-        "db:studio": "drizzle-kit studio"
+        "db:studio": "drizzle-kit studio",
+        "beads:init": "bd init",
+        "beads:init:stealth": "bd init --stealth"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.6",
@@ -37,6 +39,7 @@
         "zod": "^3.24.1"
     },
     "devDependencies": {
+        "@beads/bd": "^0.1.0",
         "@types/node": "^22.10.5",
         "@types/react": "^18.3.18",
         "@types/react-dom": "^18.3.5",

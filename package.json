@@ -13,7 +13,9 @@
         "db:generate": "npm run db:generate --workspace=app",
         "db:migrate": "npm run db:migrate --workspace=app",
         "db:push": "npm run db:push --workspace=app",
-        "db:studio": "npm run db:studio --workspace=app"
+        "db:studio": "npm run db:studio --workspace=app",
+        "beads:init": "npm run beads:init --workspace=app",
+        "beads:init:stealth": "npm run beads:init:stealth --workspace=app"
     },
     "workspaces": [
         "app"
