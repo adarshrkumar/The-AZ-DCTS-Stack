@@ -39,7 +39,3 @@ public/manifest.webmanifest
 
 # Vercel
 .vercel
-
-# Beads (AI Agent Task Tracking)
-# Uncomment the line below if using stealth mode (bd init --stealth)
-# .beads/
