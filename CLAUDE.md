@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 The ATSDC Stack is a full-stack web application framework built with Astro, TypeScript, SCSS, Drizzle ORM, and Clerk. It's designed as both a production-ready template and a CLI tool for scaffolding new projects.
 
 This is a monorepo with two main parts:
+
 - **Root**: CLI tool for scaffolding new projects (`create-atsdc-stack`)
 - **app/**: The actual Astro application template
 
@@ -40,12 +41,14 @@ npm run db:studio        # Open Drizzle Studio GUI for database
 ### Database Layer (Drizzle ORM)
 
 **Key files:**
+
 - `app/src/db/schema.ts` - Table definitions using Drizzle ORM
 - `app/src/db/validations.ts` - Zod schemas for runtime validation
 - `app/src/db/initialize.ts` - Database client initialization and utilities
 - `app/drizzle.config.ts` - Drizzle Kit configuration
 
 **Important patterns:**
+
 - Uses **NanoID** (21 chars) for all primary keys, not UUIDs or auto-increment
 - All IDs are `varchar(21)` with `.$defaultFn(() => nanoid())`
 - TypeScript types are inferred: `typeof posts.$inferSelect` and `typeof posts.$inferInsert`
@@ -57,6 +60,7 @@ npm run db:studio        # Open Drizzle Studio GUI for database
 **Location:** `app/src/pages/api/`
 
 **Pattern:** Each file exports HTTP methods as named exports:
+
 ```typescript
 export const GET: APIRoute = async ({ request, url }) => { ... }
 export const POST: APIRoute = async ({ request }) => { ... }
@@ -65,6 +69,7 @@ export const DELETE: APIRoute = async ({ request, url }) => { ... }
 ```
 
 **Key conventions:**
+
 1. Always validate inputs with Zod schemas from `validations.ts`
 2. Return JSON responses with proper status codes (200, 201, 400, 404, 500)
 3. Handle `ZodError` separately from generic errors
@@ -78,6 +83,7 @@ export const DELETE: APIRoute = async ({ request, url }) => { ... }
 **Location:** `app/src/pages/api/chat.ts`
 
 **Key pattern:** Uses AI Gateway - no provider-specific packages needed!
+
 ```typescript
 import { streamText } from 'ai';
 
@@ -95,6 +101,7 @@ return result.toDataStreamResponse();
 ### SCSS Architecture
 
 **Critical rules:**
+
 1. **NO inline `<style>` tags** in `.astro` files (except truly standalone components)
 2. **NO utility classes** - use semantic class names (`.btn`, `.card`, not `.px-4`)
 3. All styles in external `.scss` files under `app/src/styles/`
@@ -103,6 +110,7 @@ return result.toDataStreamResponse();
 6. Global variables auto-imported via Vite config: `@use "@/styles/variables/globals.scss" as *;`
 
 **Import pattern in .astro files:**
+
 ```astro
 ---
 import '@/styles/components/button.scss';
@@ -111,10 +119,12 @@ import '@/styles/pages/example.scss';
 ```
 
 **Styling modifiers (in order of preference):**
+
 1. Data attributes: `<button class="btn" data-variant="primary" data-size="lg">`
 2. Class chaining: `<button class="btn primary lg">`
 
 **SCSS organization:**
+
 - `variables/globals.scss` - Colors, spacing, typography
 - `variables/mixins.scss` - Reusable mixins like `@include flex-center`
 - `reset.scss` - CSS reset
@@ -123,6 +133,7 @@ import '@/styles/pages/example.scss';
 ### TypeScript Path Aliases
 
 Configured in `app/tsconfig.json`:
+
 ```json
 {
   "@/*": ["src/*"],
@@ -133,6 +144,7 @@ Configured in `app/tsconfig.json`:
 ```
 
 **Usage:**
+
 ```typescript
 import { db } from '@/db/initialize';
 import { posts } from '@/db/schema';
@@ -156,6 +168,7 @@ import '@/styles/components/card.scss';
 ## Environment Variables
 
 **Required:**
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk publishable key
 - `CLERK_SECRET_KEY` - Clerk secret key
@@ -208,6 +221,7 @@ const health = await getDatabaseHealth();
 ## Deployment
 
 Configured for **Vercel** deployment with:
+
 - Adapter: `@astrojs/vercel` (serverless mode)
 - Build command: `npm run build`
 - Output directory: `app/dist/`
@@ -216,6 +230,7 @@ Configured for **Vercel** deployment with:
 ## Workspace Structure
 
 This is an npm workspace:
+
 - Root `package.json` contains CLI tooling and workspace configuration
 - `app/package.json` contains the Astro application dependencies
 - Commands run from root are proxied to the app workspace via `--workspace=app`
