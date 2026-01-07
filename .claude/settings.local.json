@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node -e:*)",
       "Bash(git mv:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(test:*)"
     ]
   }
 }
